@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#0288D1</color>
     <color name="colorAccent">#FF5252</color>
     <color name="textColorPrimary">#ffffff</color>
+    <color name="defaultIcon">#656366</color>
+
     <!-- checkbox/ radiobutton <color name="colorControlActivated">#ffffff</color>-->
     <!--<color name="colorControlNormal">#ffffff</color>-->
 

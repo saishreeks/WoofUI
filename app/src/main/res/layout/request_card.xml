@@ -25,7 +25,7 @@
             />
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/walker"
             android:layout_width="wrap_content"
             android:maxWidth="200dp"
             android:layout_height="43dp"
@@ -51,7 +51,7 @@
             android:textSize="15sp"
 
             app:layout_constraintStart_toEndOf="@id/profile_image"
-            app:layout_constraintTop_toBottomOf="@id/name"
+            app:layout_constraintTop_toBottomOf="@id/walker"
             />
         <TextView
         android:id="@+id/time"
