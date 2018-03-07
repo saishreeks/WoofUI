@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="signup_api">http://172.20.100.132:8080/WoofNewService/webresources/webwoof.ownerdetails</string>
+
+</resources>
