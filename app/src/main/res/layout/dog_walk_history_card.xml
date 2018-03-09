@@ -26,12 +26,12 @@
             />
 
         <TextView
-            android:id="@+id/walker"
+            android:id="@+id/walker_name_history"
             android:layout_width="wrap_content"
             android:maxWidth="200dp"
             android:layout_height="32dp"
             android:layout_marginStart="16dp"
-            android:text="Bhargav Maniyar"
+
             android:textColor="#484A54"
             android:textSize="@dimen/main_text_size"
             app:layout_constraintStart_toEndOf="@id/profile_image" />
@@ -45,38 +45,38 @@
             android:textSize="@dimen/subtext_size"
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
-            app:layout_constraintTop_toBottomOf="@+id/walker"/>
+            app:layout_constraintTop_toBottomOf="@+id/walker_name_history"/>
 
         <TextView
             android:id="@+id/walked_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dog Name"
+
             android:textColor="#484A54"
             android:textSize="@dimen/subtext_size"
 
             app:layout_constraintStart_toEndOf="@+id/walked"
-            app:layout_constraintTop_toBottomOf="@+id/walker"/>
+            app:layout_constraintTop_toBottomOf="@+id/walker_name_history"/>
 
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/history_walk_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="20 Jan, 2018"
+
             android:textColor="#484A54"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
             app:layout_constraintTop_toBottomOf="@+id/walked"/>
 
         <TextView
-            android:id="@+id/time"
+            android:id="@+id/history_walk_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="5:00 P.M."
+
             android:textColor="#484A54"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
-            app:layout_constraintTop_toBottomOf="@+id/date"/>
+            app:layout_constraintTop_toBottomOf="@+id/history_walk_date"/>
 
 
 

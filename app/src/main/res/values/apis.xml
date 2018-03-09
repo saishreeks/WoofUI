@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="signup_api">http://172.20.100.132:8080/WoofNewService/webresources/webwoof.ownerdetails</string>
+    <string name="signup_api">http://10.0.2.2:8080/WoofMobile/webresources/web.ownerdetails</string>
 
+    <string name="walkers_info_api">http://10.0.2.2:8080/WoofMobile/webresources/web.walkinfo</string>
 </resources>

@@ -30,7 +30,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="74dp"
-        app:layout_constraintBottom_toTopOf="@+id/walker"
+        app:layout_constraintBottom_toTopOf="@+id/profile_edit_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/myRectangleView"
@@ -46,7 +46,7 @@
         android:onClick="selectImage"
         android:text="Edit Photo"
         android:textColor="#484A54"
-        app:layout_constraintBottom_toTopOf="@id/walker"
+        app:layout_constraintBottom_toTopOf="@id/profile_edit_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profile_image_ref"
@@ -54,7 +54,7 @@
 
 
     <EditText
-        android:id="@+id/walker"
+        android:id="@+id/edit_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/walker"
+        app:layout_constraintTop_toBottomOf="@+id/edit_name"
         android:hint="Address"
         android:textColor="#484A54" />
 

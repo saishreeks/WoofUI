@@ -56,6 +56,11 @@ public class HomeActivity extends AppCompatActivity {
                         Intent history = new Intent(getApplicationContext(),HistoryActivity.class);
                         startActivity(history);
                         break;
+                    case R.id.profile:
+
+                        Intent profile = new Intent(getApplicationContext(),ProfileActivity.class);
+                        startActivity(profile);
+                        break;
                 }
                 return false;
         }

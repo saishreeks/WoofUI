@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.FileDescriptor;
@@ -27,7 +28,24 @@ public class ProfileEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit);
-        getIntent();
+        EditText profileEditName = (EditText) findViewById(R.id.edit_name);
+        EditText profileEditAddress = (EditText) findViewById(R.id.edit_address);
+        EditText profileEditEmail = (EditText) findViewById(R.id.edit_email);
+        EditText profileEditMobile = (EditText) findViewById(R.id.edit_mobile);
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        String name_string = extras.getString("EXTRA_NAME");
+        String address_string = extras.getString("EXTRA_ADDRESS");
+        String email_string = extras.getString("EXTRA_EMAIL");
+        String mobile_string = extras.getString("EXTRA_MOBILE");
+
+
+        profileEditName.setText(name_string);
+        profileEditAddress.setText(address_string);
+        profileEditEmail.setText(email_string);
+        profileEditMobile.setText(mobile_string);
+
         buttonEditPhoto = (Button) findViewById(R.id.edit_photo_button);
     }
 

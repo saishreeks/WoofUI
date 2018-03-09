@@ -33,7 +33,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="74dp"
-        app:layout_constraintBottom_toTopOf="@+id/walker"
+        app:layout_constraintBottom_toTopOf="@+id/profile_edit_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/myRectangleView"
@@ -42,7 +42,7 @@
 
 
     <TextView
-        android:id="@+id/walker"
+        android:id="@+id/profile_edit_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -68,7 +68,7 @@
         android:textSize="18dp"
         android:textColor="#484A54"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/walker" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_edit_name" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view_dogs"
@@ -104,7 +104,7 @@
     </android.support.v7.widget.CardView>
 
     <TextView
-        android:id="@+id/edit_address"
+        android:id="@+id/profile_edit_address"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -115,23 +115,23 @@
         android:textColor="#484A54" />
 
     <TextView
-        android:id="@+id/edit_email"
+        android:id="@+id/profile_edit_email"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_address"
+        app:layout_constraintTop_toBottomOf="@+id/profile_edit_address"
         android:text="Email"
         android:textSize="18dp"
         android:textColor="#484A54" />
 
     <TextView
-        android:id="@+id/edit_mobile"
+        android:id="@+id/profile_edit_mobile"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_email"
+        app:layout_constraintTop_toBottomOf="@+id/profile_edit_email"
         android:text="Mobile"
         android:textSize="18dp"
         android:textColor="#484A54" />
