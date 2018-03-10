@@ -182,7 +182,7 @@ public class ApiVolley  {
     }
 
 
-    public  void putOwnerDetails(final SignUpDetails activity,final OwnerDetails ownerDetails)
+    public void putOwnerDetails(final SignUpDetails activity,final OwnerDetails ownerDetails)
     {
 
         String url =activity.getResources().getString(R.string.signup_api);
@@ -245,6 +245,81 @@ public class ApiVolley  {
                  }
                  else
                      return res;
+            }
+
+
+        };
+// Add the request to the RequestQueue.
+        queue.add(jsonRequest);
+
+    }
+
+
+
+    public void editOwnerDetails(final ProfileEditActivity activity,final OwnerDetails ownerDetails)
+    {
+
+        String url =activity.getResources().getString(R.string.signup_api);
+        url+="/1";
+        final List<String> stList=new ArrayList<>();
+        final ObjectMapper objectMapper=new ObjectMapper();
+        JSONObject obj=null;
+        try {
+            obj =new JSONObject( objectMapper.writeValueAsString(ownerDetails));
+        }catch (Exception e)
+        {
+            Log.e("JSONPARSE", e.getMessage());
+        }
+
+        // Request a string response from the provided URL.
+        final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.PUT, url,obj,
+
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+//                        activity.showToast(response.toString());
+                    }
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.e("J",error.toString());
+
+            }
+
+
+        }){
+            @Override
+            public Map<String,String> getHeaders()
+            {
+
+                Map<String, String>  params = new HashMap<>();
+                params.put("Accept","application/json");
+                return  params;
+            }
+            @Override
+            public String getBodyContentType()
+            {
+                return "application/json";
+            }
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                Response res= super.parseNetworkResponse(response);
+                if(response.statusCode>=200 || response.statusCode<=204)
+                {
+                    try {
+                        return  Response.success(new JSONObject("{\"d\":\"d\"}"), null);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e("JSONParse", e.getMessage());
+                        return  res;
+                    }
+                }
+                else
+                    return res;
             }
 
 

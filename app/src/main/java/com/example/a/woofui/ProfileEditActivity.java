@@ -14,6 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.a.api.ApiVolley;
+import com.example.a.model.OwnerDetails;
+import com.example.a.model.WalkInfo;
+
 import java.io.FileDescriptor;
 import java.io.IOException;
 
@@ -24,14 +28,18 @@ public class ProfileEditActivity extends AppCompatActivity {
     private Button buttonEditPhoto;
     private static int RESULT_LOAD_IMAGE = 1;
 
+    EditText profileEditName;
+    EditText profileEditAddress;
+    EditText profileEditEmail;
+    EditText profileEditMobile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit);
-        EditText profileEditName = (EditText) findViewById(R.id.edit_name);
-        EditText profileEditAddress = (EditText) findViewById(R.id.edit_address);
-        EditText profileEditEmail = (EditText) findViewById(R.id.edit_email);
-        EditText profileEditMobile = (EditText) findViewById(R.id.edit_mobile);
+         profileEditName = (EditText) findViewById(R.id.edit_name);
+         profileEditAddress = (EditText) findViewById(R.id.edit_address);
+         profileEditEmail = (EditText) findViewById(R.id.edit_email);
+         profileEditMobile = (EditText) findViewById(R.id.edit_mobile);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -88,14 +96,15 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         }
     }
-        private Bitmap getBitmapFromUri(Uri uri) throws IOException {
-            ParcelFileDescriptor parcelFileDescriptor =
-                    getContentResolver().openFileDescriptor(uri, "r");
-            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-            Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-            parcelFileDescriptor.close();
-            return image;
-        }
+
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor =
+                getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;
+    }
 
 
     private Bitmap getPath(Uri uri) {
@@ -107,16 +116,31 @@ public class ProfileEditActivity extends AppCompatActivity {
         cursor.moveToFirst();
         String filePath = cursor.getString(column_index);
         // cursor.close();
-        // Convert file path into bitmap image using below line.
+        // C    onvert file path into bitmap image using below line.
         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
 
         return bitmap;
     }
 
+    public void saveProfile(View view) {
+            ApiVolley api = new ApiVolley(getApplicationContext());
+        OwnerDetails ownerDetails = new OwnerDetails();
 
+            ownerDetails.setName(getValueFromUI(profileEditName));
+            ownerDetails.setAddress(getValueFromUI(profileEditAddress));
+            ownerDetails.setOwnerEmail(getValueFromUI(profileEditEmail));
+            ownerDetails.setOwnerMobile(getValueFromUI(profileEditMobile));
+            api.editOwnerDetails(this,ownerDetails );
 
 
     }
+
+    public String getValueFromUI(EditText fieldName){
+        return fieldName.getText()==null ? null :String.valueOf(fieldName.getText());
+    }
+
+
+}
 
 
 

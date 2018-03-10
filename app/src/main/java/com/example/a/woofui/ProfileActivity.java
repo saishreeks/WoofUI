@@ -46,12 +46,14 @@ public class ProfileActivity extends AppCompatActivity  {
         TextView profileMobile =(TextView) findViewById(R.id.profile_edit_mobile);
         String name = resp.optString("name");
         String address = resp.optString("address");
-        String email = resp.optString("email").isEmpty()? "N/A" : resp.optString("email");
-        // String mobile = resp.optString("mobile");
+        String email = resp.optString("ownerEmail").isEmpty()? "N/A" : resp.optString("ownerEmail");
+        String mobile = resp.optString("ownerMobile").isEmpty()? "N/A" : resp.optString("ownerMobile");
         profileName.setText(name);
         profileAddress.setText(address);
         profileEmail.setText(email);
+        profileMobile.setText(mobile);
        // profileMobile.setText(mobile);
     }
+
 
 }

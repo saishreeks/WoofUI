@@ -25,9 +25,9 @@ public class OwnerDetails {
     private String password;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
 
-    private String email;
+    private String ownerEmail;
 
-    private String mobile;
+    private String ownerMobile;
 
 //    private Collection<DogDetails> dogDetailsCollection;
 //    private Collection<WalkInfo> walkInfoCollection;
@@ -105,20 +105,21 @@ public class OwnerDetails {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getOwnerMobile() {
+        return ownerMobile;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setOwnerMobile(String ownerMobile) {
+        this.ownerMobile = ownerMobile;
     }
 
 //    @XmlTransient
