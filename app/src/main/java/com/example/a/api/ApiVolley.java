@@ -14,6 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.a.model.OwnerDetails;
 import com.example.a.model.WalkInfo;
+import com.example.a.woofui.HistoryDogMate;
 import com.example.a.woofui.HistoryDogWalk;
 import com.example.a.woofui.ProfileActivity;
 import com.example.a.woofui.ProfileEditActivity;
@@ -469,6 +470,84 @@ public class ApiVolley  {
         };
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
+
+
+    }
+
+    public void getMateInfo(final HistoryDogMate historyDogMate, final WalkInfo walkInfo) {
+        String url =historyDogMate.getResources().getString(R.string.walkers_info_api);
+//        url+="/1";
+        final ObjectMapper objectMapper=new ObjectMapper();
+
+        // Request a string response from the provided URL.
+        final JsonArrayRequest  stringRequest = new JsonArrayRequest (Request.Method.GET, url,null,
+
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        WalkInfo[] walkInfoArray=new WalkInfo[100];
+
+                        try {
+
+                            try {
+                                walkInfoArray=objectMapper.readValue(response.toString(), WalkInfo[].class);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            System.out.println("sompl;e");
+                        }catch (Exception e)
+                        {
+                            Log.e("JSONPARSE",e.getMessage());
+                        }
+
+                        historyDogMate.displayInUI(walkInfoArray);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.e("ARJU",error.toString());
+
+            }
+
+
+        }){
+
+            @Override
+            public Map<String,String> getHeaders()
+            {
+
+                Map<String, String>  params = new HashMap<>();
+                params.put("Accept","application/json");
+                return  params;
+            }
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                try {
+
+
+                    params.put("json", objectMapper.writeValueAsString(walkInfo));
+                }
+                catch(Exception e)
+                {
+                    Log.e("JSON ERROR",e.getMessage());
+                }
+
+                return params;
+            }
+            @Override
+            public String getBodyContentType()
+            {
+                return "application/json";
+            }
+
+        };
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
 
 
     }
