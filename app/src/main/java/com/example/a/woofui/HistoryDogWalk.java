@@ -24,13 +24,15 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class HistoryDogWalk extends Fragment {
 
 
-    private List<String> walkHistoryDetails;
+    private List<WalkInfo> walkerName;
+    private WalkInfo[] walkInfoList;
     RecyclerView recyclerView;
     RecyclerViewAdapter adapter;
 
@@ -42,50 +44,24 @@ public class HistoryDogWalk extends Fragment {
         WalkInfo walkInfo = new WalkInfo();
         api.getWalkersInfo(this, walkInfo);
         View rootView = inflater.inflate(R.layout.fragment_history_dogwalk, container, false);
-        walkHistoryDetails = new ArrayList<>();
-
-         recyclerView = rootView.findViewById(R.id.recyclerView_history_walk);
+        walkerName = new ArrayList<>();
+        recyclerView = rootView.findViewById(R.id.recyclerView_history_walk);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-         adapter = new RecyclerViewAdapter();
+        adapter = new RecyclerViewAdapter();
         recyclerView.setAdapter(adapter);
         return rootView;
-
     }
 
 
-    public void showToast(WalkInfo walkInfo, JSONArray response) {
-        System.out.println(response);
-            walkHistoryDetails.add("dfaf");
-            walkHistoryDetails.add("TestA");
-            walkHistoryDetails.add("testB");
-//        recyclerView.setAdapter(null);
-//        recyclerView.setLayoutManager(null);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    public void displayInUI(WalkInfo[] walkInfo) {
+        walkInfoList = walkInfo;
+        walkerName = Arrays.asList(walkInfo);
         adapter.notifyDataSetChanged();
-//        TextView walkerName = (TextView) getView().findViewById(R.id.walker_name_history);
-//        TextView walkedName = (TextView) getView().findViewById(R.id.walked_name);
-//        TextView date = (TextView) getView().findViewById(R.id.history_walk_date);
-//        TextView time = (TextView) getView().findViewById(R.id.history_walk_time);
-//        String nameWalker = walkInfo.getWalkerId().getName();// resp.optString("walker");
-//        String nameWalked = resp.optString("walked");
-//        String dateWalked = null;
-//        try {
-//            dateWalked = dateFormatter(walkInfo.getWalkInfoDate());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        String timeWalked = String.valueOf(walkInfo.getWalkTime());
-////        walkerName.setText(nameWalker);
-////        walkedName.setText(nameWalked);
-//        date.setText(dateWalked);
-//        time.setText(timeWalked);
     }
 
     private String dateFormatter(Date date) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy");
         return formatter.format(date).toString();
-
     }
 
 
@@ -103,10 +79,7 @@ public class HistoryDogWalk extends Fragment {
             walked = (TextView) itemView.findViewById(R.id.walked_name);
             walkDate = (TextView) itemView.findViewById(R.id.history_walk_date);
             walkTime = (TextView) itemView.findViewById(R.id.history_walk_time);
-
         }
-
-
     }
 
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
@@ -121,26 +94,33 @@ public class HistoryDogWalk extends Fragment {
 
         @Override
         public void onBindViewHolder(RecyclerViewHolder holder, int i) {
-            if(walkHistoryDetails.size()>0) {
-                holder.walker.setText(walkHistoryDetails.get(i));
-//            holder.walked.setText(toDisplays.get(i).dogWalked);
-//            holder.walkDate.setText(toDisplays.get(i).dateWalked);
-//            holder.walkTime.setText(toDisplays.get(i).timeWalked);
+            String date = null, time = null;
+            if (walkerName.size() > 0) {
+                holder.walker.setText(walkInfoList[i].getWalkerId().getName());
+                holder.walked.setText(walkInfoList[i].getDogId().getName());
+                try {
+                    date = walkInfoList[i].getWalkInfoDate() == null ? null : dateFormatter(walkInfoList[i].getWalkInfoDate());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                holder.walkDate.setText(date);
+                try {
+                    time = walkInfoList[i].getWalkTime() == null ? null : dateFormatter(walkInfoList[i].getWalkTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                holder.walkTime.setText(time);
             }
-
         }
 
         @Override
         public void onAttachedToRecyclerView(RecyclerView recyclerView) {
             super.onAttachedToRecyclerView(recyclerView);
-
         }
 
         @Override
         public int getItemCount() {
-            return walkHistoryDetails.size();
+            return walkerName.size();
         }
     }
-
-
 }

@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -332,17 +333,22 @@ public class ApiVolley  {
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        WalkInfo walkInfo=new WalkInfo();
+                        WalkInfo[] walkInfoArray=new WalkInfo[100];
 
-//                        try {
-////                          walkInfo=objectMapper.readValue(response.toString(), WalkInfo.class);
-//                            System.out.println("sompl;e");
-//                        }catch (JSONException e)
-//                        {
-//                            Log.e("JSONPARSE",e.getMessage());
-//                        }
+                        try {
 
-                        historyDogWalk.showToast(walkInfo,response);
+                            try {
+                                walkInfoArray=objectMapper.readValue(response.toString(), WalkInfo[].class);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            System.out.println("sompl;e");
+                        }catch (Exception e)
+                        {
+                            Log.e("JSONPARSE",e.getMessage());
+                        }
+
+                        historyDogWalk.displayInUI(walkInfoArray);
                     }
                 }, new Response.ErrorListener() {
             @Override
