@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.a.model.Mateinfo;
 import com.example.a.model.OwnerDetails;
 import com.example.a.model.WalkInfo;
 import com.example.a.woofui.HistoryDogMate;
@@ -474,8 +475,8 @@ public class ApiVolley  {
 
     }
 
-    public void getMateInfo(final HistoryDogMate historyDogMate, final WalkInfo walkInfo) {
-        String url =historyDogMate.getResources().getString(R.string.walkers_info_api);
+    public void getMateInfo(final HistoryDogMate historyDogMate, final Mateinfo mateinfo) {
+        String url =historyDogMate.getResources().getString(R.string.mate_info_api);
 //        url+="/1";
         final ObjectMapper objectMapper=new ObjectMapper();
 
@@ -486,12 +487,12 @@ public class ApiVolley  {
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        WalkInfo[] walkInfoArray=new WalkInfo[100];
+                        Mateinfo[] mateInfoArray=new Mateinfo[100];
 
                         try {
 
                             try {
-                                walkInfoArray=objectMapper.readValue(response.toString(), WalkInfo[].class);
+                                mateInfoArray=objectMapper.readValue(response.toString(), Mateinfo[].class);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -501,7 +502,7 @@ public class ApiVolley  {
                             Log.e("JSONPARSE",e.getMessage());
                         }
 
-                        historyDogMate.displayInUI(walkInfoArray);
+                        historyDogMate.displayInUI(mateInfoArray);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -529,7 +530,7 @@ public class ApiVolley  {
                 try {
 
 
-                    params.put("json", objectMapper.writeValueAsString(walkInfo));
+                    params.put("json", objectMapper.writeValueAsString(mateinfo));
                 }
                 catch(Exception e)
                 {

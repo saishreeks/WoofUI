@@ -13,7 +13,7 @@ public class Mateinfo {
 
         private Date mateDate;
 
-        private Integer dogId2;
+        private DogDetails dogId2;
 
 
         private DogDetails dogId;
@@ -41,13 +41,6 @@ public class Mateinfo {
             this.mateDate = mateDate;
         }
 
-        public Integer getDogId2() {
-            return dogId2;
-        }
-
-        public void setDogId2(Integer dogId2) {
-            this.dogId2 = dogId2;
-        }
 
 //        @XmlTransient
 //        public Collection<Matereq> getMatereqCollection() {
@@ -66,7 +59,16 @@ public class Mateinfo {
             this.dogId = dogId;
         }
 
-        @Override
+    public DogDetails getDogId2() {
+        return dogId2;
+    }
+
+    public void setDogId2(DogDetails dogId2) {
+        this.dogId2 = dogId2;
+    }
+
+
+    @Override
         public int hashCode() {
             int hash = 0;
             hash += (mateInfoId != null ? mateInfoId.hashCode() : 0);

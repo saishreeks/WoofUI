@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a.api.ApiVolley;
+import com.example.a.model.Mateinfo;
 import com.example.a.model.WalkInfo;
 
 import java.text.ParseException;
@@ -27,8 +28,8 @@ import java.util.List;
 
 public class HistoryDogMate extends Fragment {
 
-    private List<WalkInfo> walkerName;
-    private WalkInfo[] walkInfoList;
+    private List<Mateinfo> mateInfoDetails;
+    private Mateinfo[] mateInfoList;
     RecyclerView recyclerView;
     RecyclerViewAdapter adapter;
 
@@ -37,10 +38,10 @@ public class HistoryDogMate extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ApiVolley api = new ApiVolley(getActivity().getApplicationContext());
-        WalkInfo walkInfo = new WalkInfo();
-        api.getMateInfo(this, walkInfo);
+        Mateinfo mateinfo = new Mateinfo();
+        api.getMateInfo(this, mateinfo);
         View rootView = inflater.inflate(R.layout.fragment_history_dogwalk, container, false);
-        walkerName = new ArrayList<>();
+        mateInfoDetails = new ArrayList<>();
         recyclerView = rootView.findViewById(R.id.recyclerView_history_walk);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new RecyclerViewAdapter();
@@ -49,9 +50,9 @@ public class HistoryDogMate extends Fragment {
     }
 
 
-    public void displayInUI(WalkInfo[] walkInfo) {
-        walkInfoList = walkInfo;
-        walkerName = Arrays.asList(walkInfo);
+    public void displayInUI(Mateinfo[] mateinfos) {
+        mateInfoList = mateinfos;
+        mateInfoDetails = Arrays.asList(mateinfos);
         adapter.notifyDataSetChanged();
     }
 
@@ -63,18 +64,18 @@ public class HistoryDogMate extends Fragment {
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         private CardView mCardView;
-        TextView walker;
-        TextView walked;
-        TextView walkDate;
-        TextView walkTime;
+        TextView firstDogName;
+        TextView mateDate;
+        TextView secondDogName;
+        TextView secondDogOwnerName;
 
         RecyclerViewHolder(View itemView) {
             super(itemView);
-            mCardView = (CardView) itemView.findViewById(R.id.dog_walk_card);
-            walker = (TextView) itemView.findViewById(R.id.walker_name_history);
-            walked = (TextView) itemView.findViewById(R.id.walked_name);
-            walkDate = (TextView) itemView.findViewById(R.id.history_walk_date);
-            walkTime = (TextView) itemView.findViewById(R.id.history_walk_time);
+            mCardView = (CardView) itemView.findViewById(R.id.dog_mate_card);
+            firstDogName = (TextView) itemView.findViewById(R.id.dog_name1);
+            mateDate = (TextView) itemView.findViewById(R.id.date_mate);
+            secondDogName = (TextView) itemView.findViewById(R.id.dog2_name);
+            secondDogOwnerName = (TextView) itemView.findViewById(R.id.owner_name);
         }
     }
 
@@ -83,7 +84,7 @@ public class HistoryDogMate extends Fragment {
 
         @Override
         public RecyclerViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.dog_walk_history_card, viewGroup, false);
+            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.dog_mate_history_card, viewGroup, false);
             RecyclerViewHolder rvh = new RecyclerViewHolder(v);
             return rvh;
         }
@@ -91,21 +92,18 @@ public class HistoryDogMate extends Fragment {
         @Override
         public void onBindViewHolder(RecyclerViewHolder holder, int i) {
             String date = null, time = null;
-            if (walkerName.size() > 0) {
-                holder.walker.setText(walkInfoList[i].getWalkerId().getName());
-                holder.walked.setText(walkInfoList[i].getDogId().getName());
+            if (mateInfoDetails.size() > 0) {
+                holder.firstDogName.setText(mateInfoList[i].getDogId().getName());
+                holder.secondDogName.setText(mateInfoList[i].getDogId2().getName());
+                holder.secondDogOwnerName.setText(mateInfoList[i].getDogId2().getOwnerId().getName());
                 try {
-                    date = walkInfoList[i].getWalkInfoDate() == null ? null : dateFormatter(walkInfoList[i].getWalkInfoDate());
+                    date = mateInfoList[i].getMateDate() == null ? null : dateFormatter(mateInfoList[i].getMateDate());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                holder.walkDate.setText(date);
-                try {
-                    time = walkInfoList[i].getWalkTime() == null ? null : dateFormatter(walkInfoList[i].getWalkTime());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                holder.walkTime.setText(time);
+                holder.mateDate.setText(date);
+
+
             }
         }
 
@@ -116,7 +114,7 @@ public class HistoryDogMate extends Fragment {
 
         @Override
         public int getItemCount() {
-            return walkerName.size();
+            return mateInfoDetails.size();
         }
     }
 }

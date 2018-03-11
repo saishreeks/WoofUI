@@ -28,6 +28,7 @@ public class DogDetails {
 //    @JoinColumn(name = "owner_id", referencedColumnName = "owner_id")
 //    @ManyToOne
     private OwnerDetails ownerId;
+    private String breedName;
 
     public DogDetails() {
     }
@@ -66,6 +67,14 @@ public class DogDetails {
 
     public void setPic(String pic) {
         this.pic = pic;
+    }
+
+    public String getBreed() {
+        return breedName;
+    }
+
+    public void setBreed(String breedName) {
+        this.breedName = breedName;
     }
 
 //    @XmlTransient
