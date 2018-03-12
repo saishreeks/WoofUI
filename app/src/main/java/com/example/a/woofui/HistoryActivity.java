@@ -1,8 +1,13 @@
 package com.example.a.woofui;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -36,13 +41,17 @@ public class HistoryActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private Toolbar toolBar;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle mToggle;
+    private NavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_history);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
@@ -56,10 +65,60 @@ public class HistoryActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        pInitInstances();
 
 
 
     }
+
+    private void pInitInstances(){
+        toolBar = (Toolbar) findViewById(R.id.toolbar_history);
+        setSupportActionBar(toolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        drawerLayout = (DrawerLayout) findViewById(R.id.profile_drawerlayout);
+        mToggle = new ActionBarDrawerToggle(this,drawerLayout,toolBar,R.string.openProfile,R.string.closeProfile);
+        drawerLayout.addDrawerListener(mToggle);
+        navigation = (NavigationView) findViewById(R.id.profile_navigation);
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch (id){
+                    case R.id.Home:
+                        Intent home = new Intent(getApplicationContext(),HomeActivity.class);
+                        startActivity(home);
+                        break;
+                    case R.id.logout:
+                        Intent logout=new Intent(getApplicationContext(),SignIn.class);
+                        startActivity(logout);
+                        Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.DogMate:
+                        Intent dogMate = new Intent(getApplicationContext(), MateActivity.class);
+                        startActivity(dogMate);
+                        break;
+                    case R.id.history:
+                        drawerLayout.closeDrawers();
+
+                        break;
+                    case R.id.profile:
+                        Intent profile = new Intent(getApplicationContext(),HistoryActivity.class);
+                        startActivity(profile);
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mToggle.syncState();
+    }
+
 
 
 

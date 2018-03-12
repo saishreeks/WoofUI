@@ -68,6 +68,8 @@ public class HistoryDogMate extends Fragment {
         TextView mateDate;
         TextView secondDogName;
         TextView secondDogOwnerName;
+        TextView firstDogBreed;
+        TextView secondDogBreed;
 
         RecyclerViewHolder(View itemView) {
             super(itemView);
@@ -76,6 +78,8 @@ public class HistoryDogMate extends Fragment {
             mateDate = (TextView) itemView.findViewById(R.id.date_mate);
             secondDogName = (TextView) itemView.findViewById(R.id.dog2_name);
             secondDogOwnerName = (TextView) itemView.findViewById(R.id.owner_name);
+            firstDogBreed = (TextView) itemView.findViewById(R.id.dog_breed1);
+            secondDogBreed = (TextView) itemView.findViewById(R.id.dog2_breed);
         }
     }
 
@@ -95,6 +99,8 @@ public class HistoryDogMate extends Fragment {
             if (mateInfoDetails.size() > 0) {
                 holder.firstDogName.setText(mateInfoList[i].getDogId().getName());
                 holder.secondDogName.setText(mateInfoList[i].getDogId2().getName());
+                holder.firstDogBreed.setText(mateInfoList[i].getDogId().getBreed());
+                holder.secondDogBreed.setText(mateInfoList[i].getDogId2().getBreed());
                 holder.secondDogOwnerName.setText(mateInfoList[i].getDogId2().getOwnerId().getName());
                 try {
                     date = mateInfoList[i].getMateDate() == null ? null : dateFormatter(mateInfoList[i].getMateDate());

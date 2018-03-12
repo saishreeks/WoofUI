@@ -18,9 +18,11 @@
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/profile_picture"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
 
 
             />
@@ -29,10 +31,10 @@
             android:id="@+id/walker_name_history"
             android:layout_width="wrap_content"
             android:maxWidth="200dp"
-            android:layout_height="32dp"
+            android:layout_height="28dp"
             android:layout_marginStart="16dp"
 
-            android:textColor="#484A54"
+            android:textColor="#000000"
             android:textSize="@dimen/main_text_size"
             app:layout_constraintStart_toEndOf="@id/profile_image" />
 
@@ -41,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Walked: "
-            android:textColor="#484A54"
+            android:textColor="#635d5d"
             android:textSize="@dimen/subtext_size"
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
@@ -52,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:textColor="#484A54"
+            android:textColor="#635d5d"
             android:textSize="@dimen/subtext_size"
 
             app:layout_constraintStart_toEndOf="@+id/walked"
@@ -64,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
 
-            android:textColor="#484A54"
+            android:textColor="#635d5d"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
             app:layout_constraintTop_toBottomOf="@+id/walked"/>
 
@@ -74,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
 
-            android:textColor="#484A54"
+            android:textColor="#635d5d"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
             app:layout_constraintTop_toBottomOf="@+id/history_walk_date"/>
 

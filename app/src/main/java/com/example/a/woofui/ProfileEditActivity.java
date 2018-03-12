@@ -7,12 +7,19 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.a.api.ApiVolley;
 import com.example.a.model.OwnerDetails;
@@ -23,10 +30,16 @@ import java.io.IOException;
 
 public class ProfileEditActivity extends AppCompatActivity {
 
+    private Toolbar toolBar;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle mToggle;
+    private NavigationView navigation;
+
     private static final int SELECT_PICTURE = 0;
     private ImageView imageView;
     private Button buttonEditPhoto;
     private static int RESULT_LOAD_IMAGE = 1;
+    private Bitmap image;
 
     EditText profileEditName;
     EditText profileEditAddress;
@@ -36,6 +49,8 @@ public class ProfileEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit);
+
+        pInitInstances();
          profileEditName = (EditText) findViewById(R.id.edit_name);
          profileEditAddress = (EditText) findViewById(R.id.edit_address);
          profileEditEmail = (EditText) findViewById(R.id.edit_email);
@@ -55,6 +70,54 @@ public class ProfileEditActivity extends AppCompatActivity {
         profileEditMobile.setText(mobile_string);
 
         buttonEditPhoto = (Button) findViewById(R.id.edit_photo_button);
+    }
+
+    private void pInitInstances(){
+        toolBar = (Toolbar) findViewById(R.id.toolbar_profile_edit);
+        setSupportActionBar(toolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        drawerLayout = (DrawerLayout) findViewById(R.id.profile_edit_drawerlayout);
+        mToggle = new ActionBarDrawerToggle(this,drawerLayout,toolBar,R.string.openProfile,R.string.closeProfile);
+        drawerLayout.addDrawerListener(mToggle);
+        navigation = (NavigationView) findViewById(R.id.profile_edit_navigation);
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch (id){
+                    case R.id.Home:
+                        Intent home = new Intent(getApplicationContext(),HomeActivity.class);
+                        startActivity(home);
+                        break;
+                    case R.id.logout:
+                        Intent logout=new Intent(getApplicationContext(),SignIn.class);
+                        startActivity(logout);
+                        Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.DogMate:
+                        Intent dogMate = new Intent(getApplicationContext(), MateActivity.class);
+                        startActivity(dogMate);
+                        break;
+                    case R.id.history:
+                        Intent history = new Intent(getApplicationContext(),HistoryActivity.class);
+                        startActivity(history);
+                        break;
+                    case R.id.profile:
+                        Intent profile = new Intent(getApplicationContext(),ProfileActivity.class);
+                        startActivity(profile);
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mToggle.syncState();
     }
 
     public void selectImage(View view) {
@@ -131,6 +194,8 @@ public class ProfileEditActivity extends AppCompatActivity {
             ownerDetails.setOwnerEmail(getValueFromUI(profileEditEmail));
             ownerDetails.setOwnerMobile(getValueFromUI(profileEditMobile));
             api.editOwnerDetails(this,ownerDetails );
+
+
 
 
     }

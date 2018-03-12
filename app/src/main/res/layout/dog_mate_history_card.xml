@@ -18,31 +18,33 @@
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/dog1_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/profile_picture" />
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/profile_picture"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="10dp"/>
 
         <TextView
             android:id="@+id/dog_name1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:text="Dog Name 1"
-            android:textColor="#484A54"
-            android:textSize="@dimen/dog_name_history"
-            android:layout_marginStart="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/dog1_image"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:textColor="#000000"
+            android:textSize="@dimen/main_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dog1_image" />
 
         <TextView
             android:id="@+id/dog_breed1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:text="Dog Breed 1"
-            android:textColor="#484A54"
+            android:textColor="#635d5d"
             android:textSize="@dimen/subtext_size"
-            android:layout_marginStart="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/dog_name1"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dog_name1" />
 
         <TextView
             android:id="@+id/date_mate"
@@ -58,43 +60,44 @@
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/dog2_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/profile_picture"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="10dp"/>
 
         <TextView
             android:id="@+id/dog2_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="260dp"
             android:text="Dog Name 2"
-            android:textColor="#484A54"
-            android:textSize="@dimen/dog_name_history"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="#000000"
+            android:textSize="@dimen/main_text_size"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dog2_image" />
 
         <TextView
             android:id="@+id/dog2_breed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
+            android:layout_marginStart="260dp"
             android:text="Dog Breed 2"
-            android:textColor="#484A54"
+            android:textColor="#635d5d"
             android:textSize="@dimen/subtext_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dog2_name"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dog2_name" />
 
         <TextView
             android:id="@+id/owner_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="35dp"
+            android:layout_marginStart="260dp"
             android:text="Owner name"
-            android:textColor="#484A54"
+            android:textColor="#635d5d"
             android:textSize="@dimen/subtext_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dog2_breed"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dog2_breed" />
 
 
     </android.support.constraint.ConstraintLayout>
