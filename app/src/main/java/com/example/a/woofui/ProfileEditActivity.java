@@ -195,9 +195,6 @@ public class ProfileEditActivity extends AppCompatActivity {
             ownerDetails.setOwnerMobile(getValueFromUI(profileEditMobile));
             api.editOwnerDetails(this,ownerDetails );
 
-
-
-
     }
 
     public String getValueFromUI(EditText fieldName){

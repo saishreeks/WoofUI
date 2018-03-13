@@ -28,7 +28,7 @@
     <!--Including toolbar -->
     <include
         android:id="@+id/toolbar_profile_edit"
-        layout="@layout/toolbar_profile_edit"
+        layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -125,6 +125,8 @@
         android:layout_height="wrap_content"
         android:text="Save"
         android:textColor="@color/textColorPrimary"
+        android:backgroundTint="@color/colorPrimary"
+
         app:layout_constraintTop_toBottomOf="@+id/edit_mobile"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

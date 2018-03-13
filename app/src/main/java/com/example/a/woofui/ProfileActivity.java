@@ -34,7 +34,6 @@ public class ProfileActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_profile);
         pInitInstances();
 
-
     }
 
     private void pInitInstances(){
