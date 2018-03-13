@@ -98,6 +98,7 @@ public class HistoryDogWalk extends Fragment {
             if (walkerName.size() > 0) {
                 holder.walker.setText(walkInfoList[i].getWalkerId().getName());
                 holder.walked.setText(walkInfoList[i].getDogId().getName());
+
                 try {
                     date = walkInfoList[i].getWalkInfoDate() == null ? null : dateFormatter(walkInfoList[i].getWalkInfoDate());
                 } catch (ParseException e) {

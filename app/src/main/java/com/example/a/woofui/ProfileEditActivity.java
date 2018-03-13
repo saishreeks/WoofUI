@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import com.example.a.api.ApiVolley;
 import com.example.a.model.OwnerDetails;
 import com.example.a.model.WalkInfo;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
@@ -40,21 +42,23 @@ public class ProfileEditActivity extends AppCompatActivity {
     private Button buttonEditPhoto;
     private static int RESULT_LOAD_IMAGE = 1;
     private Bitmap image;
+    Bitmap bmp;
 
     EditText profileEditName;
     EditText profileEditAddress;
     EditText profileEditEmail;
     EditText profileEditMobile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit);
 
         pInitInstances();
-         profileEditName = (EditText) findViewById(R.id.edit_name);
-         profileEditAddress = (EditText) findViewById(R.id.edit_address);
-         profileEditEmail = (EditText) findViewById(R.id.edit_email);
-         profileEditMobile = (EditText) findViewById(R.id.edit_mobile);
+        profileEditName = (EditText) findViewById(R.id.edit_name);
+        profileEditAddress = (EditText) findViewById(R.id.edit_address);
+        profileEditEmail = (EditText) findViewById(R.id.edit_email);
+        profileEditMobile = (EditText) findViewById(R.id.edit_mobile);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -72,40 +76,40 @@ public class ProfileEditActivity extends AppCompatActivity {
         buttonEditPhoto = (Button) findViewById(R.id.edit_photo_button);
     }
 
-    private void pInitInstances(){
+    private void pInitInstances() {
         toolBar = (Toolbar) findViewById(R.id.toolbar_profile_edit);
         setSupportActionBar(toolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawerLayout = (DrawerLayout) findViewById(R.id.profile_edit_drawerlayout);
-        mToggle = new ActionBarDrawerToggle(this,drawerLayout,toolBar,R.string.openProfile,R.string.closeProfile);
+        mToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar, R.string.openProfile, R.string.closeProfile);
         drawerLayout.addDrawerListener(mToggle);
         navigation = (NavigationView) findViewById(R.id.profile_edit_navigation);
         navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                switch (id){
+                switch (id) {
                     case R.id.Home:
-                        Intent home = new Intent(getApplicationContext(),HomeActivity.class);
+                        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(home);
                         break;
                     case R.id.logout:
-                        Intent logout=new Intent(getApplicationContext(),SignIn.class);
+                        Intent logout = new Intent(getApplicationContext(), SignIn.class);
                         startActivity(logout);
-                        Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Logged Out", Toast.LENGTH_LONG).show();
                         break;
                     case R.id.DogMate:
                         Intent dogMate = new Intent(getApplicationContext(), MateActivity.class);
                         startActivity(dogMate);
                         break;
                     case R.id.history:
-                        Intent history = new Intent(getApplicationContext(),HistoryActivity.class);
+                        Intent history = new Intent(getApplicationContext(), HistoryActivity.class);
                         startActivity(history);
                         break;
                     case R.id.profile:
-                        Intent profile = new Intent(getApplicationContext(),ProfileActivity.class);
+                        Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
                         startActivity(profile);
                         break;
                 }
@@ -148,7 +152,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
             ImageView imageView = (ImageView) findViewById(R.id.profile_image_ref);
 
-            Bitmap bmp = null;
+            bmp = null;
             try {
                 bmp = getBitmapFromUri(selectedImage);
             } catch (IOException e) {
@@ -156,6 +160,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             imageView.setImageBitmap(bmp);
+
 
         }
     }
@@ -186,19 +191,26 @@ public class ProfileEditActivity extends AppCompatActivity {
     }
 
     public void saveProfile(View view) {
-            ApiVolley api = new ApiVolley(getApplicationContext());
+        ApiVolley api = new ApiVolley(getApplicationContext());
         OwnerDetails ownerDetails = new OwnerDetails();
 
-            ownerDetails.setName(getValueFromUI(profileEditName));
-            ownerDetails.setAddress(getValueFromUI(profileEditAddress));
-            ownerDetails.setOwnerEmail(getValueFromUI(profileEditEmail));
-            ownerDetails.setOwnerMobile(getValueFromUI(profileEditMobile));
-            api.editOwnerDetails(this,ownerDetails );
+        ownerDetails.setName(getValueFromUI(profileEditName));
+        ownerDetails.setAddress(getValueFromUI(profileEditAddress));
+        ownerDetails.setOwnerEmail(getValueFromUI(profileEditEmail));
+        ownerDetails.setOwnerMobile(getValueFromUI(profileEditMobile));
+
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+        byte[] imageBytes = baos.toByteArray();
+        final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        ownerDetails.setProfilepic(imageString);
+        api.editOwnerDetails(this, ownerDetails);
 
     }
 
-    public String getValueFromUI(EditText fieldName){
-        return fieldName.getText()==null ? null :String.valueOf(fieldName.getText());
+    public String getValueFromUI(EditText fieldName) {
+        return fieldName.getText() == null ? null : String.valueOf(fieldName.getText());
     }
 
 
