@@ -1,6 +1,8 @@
 package com.example.a.woofui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -8,8 +10,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +21,8 @@ import com.example.a.api.ApiVolley;
 import com.example.a.model.OwnerDetails;
 
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 
 public class ProfileActivity extends AppCompatActivity  {
 
@@ -104,6 +110,21 @@ public class ProfileActivity extends AppCompatActivity  {
         TextView profileAddress =(TextView) findViewById(R.id.profile_edit_address);
         TextView profileEmail =(TextView) findViewById(R.id.profile_edit_email);
         TextView profileMobile =(TextView) findViewById(R.id.profile_edit_mobile);
+
+        ImageView image =(ImageView)findViewById(R.id.profile_image_ref);
+
+        //encode image to base64 string
+
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile_picture);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+
+        //decode base64 string to image
+        imageBytes = Base64.decode(resp.optString("profilepic"), Base64.DEFAULT);
+        Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        image.setImageBitmap(decodedImage);
         String name = resp.optString("name");
         String address = resp.optString("address");
         String email = resp.optString("ownerEmail").isEmpty()? "N/A" : resp.optString("ownerEmail");
