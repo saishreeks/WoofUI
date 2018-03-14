@@ -3,6 +3,7 @@ package com.example.a.woofui;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -11,14 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.example.a.api.ApiVolley;
 import com.example.a.model.OwnerDetails;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -30,14 +34,13 @@ public class ProfileActivity extends AppCompatActivity  {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView navigation;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ApiVolley api=new ApiVolley(getApplicationContext());
-        OwnerDetails details=new OwnerDetails();
-        api.getOwnerDetails(this,details);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        image = findViewById(R.id.profile_image_ref);
         pInitInstances();
 
     }
@@ -111,20 +114,16 @@ public class ProfileActivity extends AppCompatActivity  {
         TextView profileEmail =(TextView) findViewById(R.id.profile_edit_email);
         TextView profileMobile =(TextView) findViewById(R.id.profile_edit_mobile);
 
-        ImageView image =(ImageView)findViewById(R.id.profile_image_ref);
 
         //encode image to base64 string
 
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile_picture);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
+
 
         //decode base64 string to image
-        imageBytes = Base64.decode(resp.optString("profilepic"), Base64.DEFAULT);
-        Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        image.setImageBitmap(decodedImage);
+
+
+
         String name = resp.optString("name");
         String address = resp.optString("address");
         String email = resp.optString("ownerEmail").isEmpty()? "N/A" : resp.optString("ownerEmail");
@@ -136,5 +135,12 @@ public class ProfileActivity extends AppCompatActivity  {
        // profileMobile.setText(mobile);
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ApiVolley api=new ApiVolley(getApplicationContext());
+        OwnerDetails details=new OwnerDetails();
+        api.getOwnerDetails(this,details);
+        Picasso.with(this).load(getString(R.string.picDownload_api)).into(image);
+    }
 }
