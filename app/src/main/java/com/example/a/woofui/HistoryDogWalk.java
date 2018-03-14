@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.a.api.ApiVolley;
 import com.example.a.model.WalkInfo;
 import com.squareup.picasso.Callback;
@@ -105,18 +106,18 @@ public class HistoryDogWalk extends Fragment {
             if (walkerName.size() > 0) {
                 String imagePath = getString(R.string.picDownload_api) + "/" +walkInfoList[i].getWalkerId().getOwnerId();
 //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-
-                Picasso.with(getContext()).load(imagePath).into(userImage, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        holder.itemView.findViewById(R.id.loadingPanel_history).setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
+                Glide.with(getContext()).load(imagePath).into(userImage);
+//                Picasso.with(getContext()).load(imagePath).into(userImage, new Callback() {
+//                    @Override
+//                    public void onSuccess() {
+//                        holder.itemView.findViewById(R.id.loadingPanel_history).setVisibility(View.GONE);
+//                    }
+//
+//                    @Override
+//                    public void onError() {
+//
+//                    }
+//                });
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
