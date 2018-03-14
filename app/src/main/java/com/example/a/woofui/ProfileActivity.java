@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.android.volley.toolbox.ImageLoader;
 import com.example.a.api.ApiVolley;
 import com.example.a.model.OwnerDetails;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -141,6 +142,18 @@ public class ProfileActivity extends AppCompatActivity  {
         ApiVolley api=new ApiVolley(getApplicationContext());
         OwnerDetails details=new OwnerDetails();
         api.getOwnerDetails(this,details);
-        Picasso.with(this).load(getString(R.string.picDownload_api)).into(image);
+        String urlForPic =getString(R.string.picDownload_api) + "/1";
+        Picasso.with(this).load(urlForPic).into(image,new Callback() {
+            @Override
+            public void onSuccess() {
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
     }
 }

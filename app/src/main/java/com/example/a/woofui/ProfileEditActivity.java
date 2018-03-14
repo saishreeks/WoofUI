@@ -234,7 +234,6 @@ public class ProfileEditActivity extends AppCompatActivity {
     public void saveProfile(View view) {
         ApiVolley api = new ApiVolley(getApplicationContext());
         OwnerDetails ownerDetails = new OwnerDetails();
-
         ownerDetails.setName(getValueFromUI(profileEditName));
         ownerDetails.setAddress(getValueFromUI(profileEditAddress));
         ownerDetails.setOwnerEmail(getValueFromUI(profileEditEmail));

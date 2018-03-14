@@ -4,6 +4,7 @@ package com.example.a.woofui;
  * Created by saishree on 2/27/18.
  */
 
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -12,10 +13,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a.api.ApiVolley;
 import com.example.a.model.WalkInfo;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +39,8 @@ public class HistoryDogWalk extends Fragment {
     private WalkInfo[] walkInfoList;
     RecyclerView recyclerView;
     RecyclerViewAdapter adapter;
+    ImageView userImage;
+
 
 
     @Override
@@ -79,6 +85,7 @@ public class HistoryDogWalk extends Fragment {
             walked = (TextView) itemView.findViewById(R.id.walked_name);
             walkDate = (TextView) itemView.findViewById(R.id.history_walk_date);
             walkTime = (TextView) itemView.findViewById(R.id.history_walk_time);
+            userImage = (ImageView) itemView.findViewById(R.id.profile_image);
         }
     }
 
@@ -93,10 +100,32 @@ public class HistoryDogWalk extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerViewHolder holder, int i) {
+        public void onBindViewHolder(final RecyclerViewHolder holder, int i) {
             String date = null, time = null;
             if (walkerName.size() > 0) {
-                holder.walker.setText(walkInfoList[i].getWalkerId().getName());
+                String imagePath = getString(R.string.picDownload_api) + "/" +walkInfoList[i].getWalkerId().getOwnerId();
+//findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+                Picasso.with(getContext()).load(imagePath).into(userImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        holder.itemView.findViewById(R.id.loadingPanel_history).setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                },5000);
+
+
+            holder.walker.setText(walkInfoList[i].getWalkerId().getName());
                 holder.walked.setText(walkInfoList[i].getDogId().getName());
 
                 try {
@@ -112,6 +141,9 @@ public class HistoryDogWalk extends Fragment {
                 }
                 holder.walkTime.setText(time);
             }
+        }
+
+        private void finish() {
         }
 
         @Override

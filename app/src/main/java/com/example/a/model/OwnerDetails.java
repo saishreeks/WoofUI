@@ -29,6 +29,7 @@ public class OwnerDetails {
 
     private String ownerMobile;
 
+
 //    private Collection<DogDetails> dogDetailsCollection;
 //    private Collection<WalkInfo> walkInfoCollection;
 //    @OneToMany(mappedBy = "walkerId")
@@ -36,6 +37,7 @@ public class OwnerDetails {
 
     public OwnerDetails() {
     }
+
 
     public OwnerDetails(Integer ownerId) {
         this.ownerId = ownerId;
