@@ -251,7 +251,7 @@ public class ProfileEditActivity extends AppCompatActivity {
            public void run() {
                finish();
            }
-       },2000);
+       },4000);
     }
 
     public String getValueFromUI(EditText fieldName) {

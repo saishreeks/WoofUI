@@ -2,39 +2,26 @@ package com.example.a.woofui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.Looper;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.example.a.api.ApiVolley;
 import com.example.a.model.OwnerDetails;
-import com.example.a.model.WalkInfo;
-import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -51,6 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         image = findViewById(R.id.profile_image_ref);
+
         pInitInstances();
     }
 
@@ -141,7 +129,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
 
         super.onResume();
         ApiVolley api = new ApiVolley(getApplicationContext());
@@ -149,19 +137,13 @@ public class ProfileActivity extends AppCompatActivity {
         api.getOwnerDetails(this, details);
         String urlForPic = getString(R.string.picDownload_api) + "/1";
 
-//        Picasso.with(this).load(urlForPic).into(image,new Callback() {
-//            @Override
-//            public void onSuccess() {
-//                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+        Picasso.with(this).load(urlForPic).networkPolicy(NetworkPolicy.NO_CACHE).into(image);
+
 //
-//            }
-//
-//            @Override
-//            public void onError() {
-//
-//            }
-//        });
-        Glide.with(this).load(urlForPic).into(image);
+//        Glide.with(this)
+//                .load(urlForPic)
+//                .skipMemoryCache(true)
+//                .into(image);
 
 //        Glide.with(this)
 //                .asBitmap()
@@ -174,4 +156,6 @@ public class ProfileActivity extends AppCompatActivity {
 //                    }
 //                });
     }
+
+
 }

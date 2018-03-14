@@ -103,7 +103,7 @@ public class HistoryActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         break;
                     case R.id.profile:
-                        Intent profile = new Intent(getApplicationContext(),HistoryActivity.class);
+                        Intent profile = new Intent(getApplicationContext(),ProfileActivity.class);
                         startActivity(profile);
                         break;
                 }
