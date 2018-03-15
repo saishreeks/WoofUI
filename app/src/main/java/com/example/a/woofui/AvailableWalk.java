@@ -43,7 +43,7 @@ public class AvailableWalk extends Fragment {
         View view = inflater.inflate(R.layout.recycle_view_list,container,false);
         recyclerView= view.findViewById(R.id.recyclerview);
         ApiVolley api=new ApiVolley(getContext());
-        api.getAvailableWalkList(this,  2,1);
+        api.getAvailableWalkList(this,  1,95050);
         return view;
     }
 

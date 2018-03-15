@@ -76,7 +76,7 @@ public class WalkReq {
 
     @Override
     public String toString() {
-        return "webwoof.WalkReq[ walkReqId=" + walkReqId + " ]";
+        return "web.WalkReq[ walkReqId=" + walkReqId + " ]";
     }
 
 }

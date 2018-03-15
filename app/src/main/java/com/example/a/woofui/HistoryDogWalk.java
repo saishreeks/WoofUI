@@ -53,8 +53,7 @@ public class HistoryDogWalk extends Fragment {
         walkerName = new ArrayList<>();
         recyclerView = rootView.findViewById(R.id.recyclerView_history_walk);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new RecyclerViewAdapter();
-        recyclerView.setAdapter(adapter);
+
         return rootView;
     }
 
@@ -62,6 +61,8 @@ public class HistoryDogWalk extends Fragment {
     public void displayInUI(WalkInfo[] walkInfo) {
         walkInfoList = walkInfo;
         walkerName = Arrays.asList(walkInfo);
+        adapter = new RecyclerViewAdapter();
+        recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
@@ -76,7 +77,8 @@ public class HistoryDogWalk extends Fragment {
         TextView walker;
         TextView walked;
         TextView walkDate;
-        TextView walkTime;
+        TextView fromTime;
+        TextView toTime;
 
         RecyclerViewHolder(View itemView) {
             super(itemView);
@@ -84,7 +86,8 @@ public class HistoryDogWalk extends Fragment {
             walker = (TextView) itemView.findViewById(R.id.walker_name_history);
             walked = (TextView) itemView.findViewById(R.id.walked_name);
             walkDate = (TextView) itemView.findViewById(R.id.history_walk_date);
-            walkTime = (TextView) itemView.findViewById(R.id.history_walk_time);
+            fromTime = (TextView) itemView.findViewById(R.id.history_walk_from_time);
+            toTime = (TextView) itemView.findViewById(R.id.history_walk_to_time);
             userImage = (ImageView) itemView.findViewById(R.id.profile_image);
         }
     }
@@ -101,7 +104,7 @@ public class HistoryDogWalk extends Fragment {
 
         @Override
         public void onBindViewHolder(final RecyclerViewHolder holder, int i) {
-            String date = null, time = null;
+            String date = null, fromTime = null, toTime = null;
             if (walkerName.size() > 0) {
                 String imagePath = getString(R.string.picDownload_api) + "/" +walkInfoList[i].getWalkerId().getOwnerId();
 //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
@@ -127,6 +130,9 @@ public class HistoryDogWalk extends Fragment {
 
                 holder.walker.setText(walkInfoList[i].getWalkerId().getName());
                 holder.walked.setText(walkInfoList[i].getDogId().getName());
+//                holder.fromTime.setText((CharSequence) walkInfoList[i].getFromTime());
+//                holder.toTime.setText((CharSequence) walkInfoList[i].getToTime());
+
 
                 try {
                     date = walkInfoList[i].getWalkInfoDate() == null ? null : dateFormatter(walkInfoList[i].getWalkInfoDate());
@@ -135,11 +141,17 @@ public class HistoryDogWalk extends Fragment {
                 }
                 holder.walkDate.setText(date);
                 try {
-                    time = walkInfoList[i].getWalkTime() == null ? null : dateFormatter(walkInfoList[i].getWalkTime());
+                    fromTime = walkInfoList[i].getFromTime() == null ? null : dateFormatter(walkInfoList[i].getFromTime());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                holder.walkTime.setText(time);
+                holder.fromTime.setText(fromTime);
+                try {
+                    toTime = walkInfoList[i].getToTime() == null ? null : dateFormatter(walkInfoList[i].getToTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                holder.fromTime.setText(toTime);
             }
         }
 

@@ -236,8 +236,8 @@ public class ProfileEditActivity extends AppCompatActivity {
         OwnerDetails ownerDetails = new OwnerDetails();
         ownerDetails.setName(getValueFromUI(profileEditName));
         ownerDetails.setAddress(getValueFromUI(profileEditAddress));
-        ownerDetails.setEmail(getValueFromUI(profileEditEmail));
-        ownerDetails.setMobile(getValueFromUI(profileEditMobile));
+        ownerDetails.setOwnerEmail(getValueFromUI(profileEditEmail));
+        ownerDetails.setOwnerMobile(getValueFromUI(profileEditMobile));
 
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

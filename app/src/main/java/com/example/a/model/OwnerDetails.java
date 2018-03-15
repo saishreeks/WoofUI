@@ -22,12 +22,35 @@ public class OwnerDetails {
 
     private String profilepic;
 
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
+
+    public String getOwnerMobile() {
+        return ownerMobile;
+    }
+
+    public void setOwnerMobile(String ownerMobile) {
+        this.ownerMobile = ownerMobile;
+    }
+
+    private String ownerEmail;
+
+    private String ownerMobile;
+
     private String password;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
 
-    private String email;
 
-    private String mobile;
+
+    private Integer zipcode;
+
+    private String token;
 
 //    private Collection<DogDetails> dogDetailsCollection;
 //    private Collection<WalkInfo> walkInfoCollection;
@@ -105,20 +128,21 @@ public class OwnerDetails {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+
+    public Integer getZipcode() {
+        return zipcode;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setZipcode(Integer zipcode) {
+        this.zipcode = zipcode;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getToken() {
+        return token;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setToken(String token) {
+        this.token = token;
     }
 
 //    @XmlTransient
@@ -170,7 +194,8 @@ public class OwnerDetails {
 
     @Override
     public String toString() {
-        return "webwoof.OwnerDetails[ ownerId=" + ownerId + " ]";
+        return "woofw.OwnerDetails[ ownerId=" + ownerId + " ]";
     }
+
 
 }

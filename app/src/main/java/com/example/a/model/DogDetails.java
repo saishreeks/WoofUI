@@ -1,5 +1,6 @@
 package com.example.a.model;
 
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -8,38 +9,48 @@ import java.util.Date;
 
 public class DogDetails {
 
-    private Integer id;
+    private Integer dogId;
 
     private String name;
 
     private Date dob;
 
 
+    private String breed;
+
     private String pic;
+
+    private Collection<Matereq> matereqCollection;
+
+    private Collection<WalkInfo> walkInfoCollection;
+
+    private Collection<Mateinfo> mateinfoCollection;
+
+    public void setMateinfoCollection1(Collection<Mateinfo> mateinfoCollection1) {
+        this.mateinfoCollection1 = mateinfoCollection1;
+    }
+
+    private Collection<Mateinfo> mateinfoCollection1;
+
+
+
+    //private Collection<Dogpics> dogpicsCollection;
 
     private OwnerDetails ownerId;
 
-//    private Collection<WalkInfo> walkInfoCollection;
-//
-//    private Collection<MateInfo> mateInfoCollection;
-//
-//    private Collection<DogPics> dogPicsCollection;
-//
-//    private Collection<MateReq> mateReqCollection;
-//
     public DogDetails() {
     }
 
-    public DogDetails(Integer id) {
-        this.id = id;
+    public DogDetails(Integer dogId) {
+        this.dogId = dogId;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getDogId() {
+        return dogId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setDogId(Integer dogId) {
+        this.dogId = dogId;
     }
 
     public String getName() {
@@ -66,6 +77,56 @@ public class DogDetails {
         this.pic = pic;
     }
 
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+
+    public Collection<Matereq> getMatereqCollection() {
+        return matereqCollection;
+    }
+
+    public void setMatereqCollection(Collection<Matereq> matereqCollection) {
+        this.matereqCollection = matereqCollection;
+    }
+
+
+    public Collection<WalkInfo> getWalkInfoCollection() {
+        return walkInfoCollection;
+    }
+
+    public void setWalkInfoCollection(Collection<WalkInfo> walkInfoCollection) {
+        this.walkInfoCollection = walkInfoCollection;
+    }
+
+
+    public Collection<Mateinfo> getMateinfoCollection() {
+        return mateinfoCollection;
+    }
+
+
+    public Collection<Mateinfo> getMateinfoCollection1() {
+        return mateinfoCollection1;
+    }
+
+    public void setMateinfoCollection(Collection<Mateinfo> mateinfoCollection) {
+        this.mateinfoCollection = mateinfoCollection;
+    }
+
+
+
+//    public Collection<Dogpics> getDogpicsCollection() {
+//        return dogpicsCollection;
+//    }
+//
+//    public void setDogpicsCollection(Collection<Dogpics> dogpicsCollection) {
+//        this.dogpicsCollection = dogpicsCollection;
+//    }
+
     public OwnerDetails getOwnerId() {
         return ownerId;
     }
@@ -73,47 +134,11 @@ public class DogDetails {
     public void setOwnerId(OwnerDetails ownerId) {
         this.ownerId = ownerId;
     }
-//
-//    @XmlTransient
-//    public Collection<WalkInfo> getWalkInfoCollection() {
-//        return walkInfoCollection;
-//    }
-//
-//    public void setWalkInfoCollection(Collection<WalkInfo> walkInfoCollection) {
-//        this.walkInfoCollection = walkInfoCollection;
-//    }
-//
-//    @XmlTransient
-//    public Collection<MateInfo> getMateInfoCollection() {
-//        return mateInfoCollection;
-//    }
-//
-//    public void setMateInfoCollection(Collection<MateInfo> mateInfoCollection) {
-//        this.mateInfoCollection = mateInfoCollection;
-//    }
-//
-//    @XmlTransient
-//    public Collection<DogPics> getDogPicsCollection() {
-//        return dogPicsCollection;
-//    }
-//
-//    public void setDogPicsCollection(Collection<DogPics> dogPicsCollection) {
-//        this.dogPicsCollection = dogPicsCollection;
-//    }
-//
-//    @XmlTransient
-//    public Collection<MateReq> getMateReqCollection() {
-//        return mateReqCollection;
-//    }
-//
-//    public void setMateReqCollection(Collection<MateReq> mateReqCollection) {
-//        this.mateReqCollection = mateReqCollection;
-//    }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (dogId != null ? dogId.hashCode() : 0);
         return hash;
     }
 
@@ -124,7 +149,7 @@ public class DogDetails {
             return false;
         }
         DogDetails other = (DogDetails) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.dogId == null && other.dogId != null) || (this.dogId != null && !this.dogId.equals(other.dogId))) {
             return false;
         }
         return true;
@@ -132,8 +157,6 @@ public class DogDetails {
 
     @Override
     public String toString() {
-        return "webwoof.DogDetails[ id=" + id + " ]";
+        return "webw.DogDetails[ dogId=" + dogId + " ]";
     }
-
 }
-

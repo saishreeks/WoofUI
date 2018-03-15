@@ -8,21 +8,19 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.a.model.DogDetails;
-import com.example.a.model.MateInfo;
-import com.example.a.model.MateReq;
+import com.example.a.model.Mateinfo;
+import com.example.a.model.Matereq;
 import com.example.a.model.OwnerDetails;
 import com.example.a.model.WalkInfo;
 import com.example.a.model.WalkReq;
@@ -30,7 +28,6 @@ import com.example.a.woofui.AvailableMate;
 import com.example.a.woofui.AvailableWalk;
 import com.example.a.woofui.HistoryDogMate;
 import com.example.a.woofui.HistoryDogWalk;
-import com.example.a.woofui.MateActivity;
 import com.example.a.woofui.PostMate;
 import com.example.a.woofui.PostMateInfo;
 import com.example.a.woofui.PostWalk;
@@ -43,29 +40,20 @@ import com.example.a.woofui.RequestedWalk;
 import com.example.a.woofui.RequestsMate;
 import com.example.a.woofui.RequestsWalk;
 import com.example.a.woofui.SignUpDetails;
-import com.example.a.woofui.WalkActivity;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
-import java.net.URLEncoder;
-import java.security.spec.ECField;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.concurrent.Callable;
 
 /**
  * Created by A on 3/6/2018.
@@ -650,7 +638,7 @@ public class ApiVolley  {
 
         String url =activity.getResources().getString(R.string.availableWalkList_api);
         //url+="/"+ownerDetails.getOwnerId();
-        url+="/"+"2"+ "/"+"1";
+        url+="/"+ownerId+ "/"+zip;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
@@ -903,7 +891,7 @@ public class ApiVolley  {
     public  void getPostWalkList(final PostWalk activity, final int id)
     {
 
-        String url =activity.getResources().getString(R.string.walkList_api);
+        String url =activity.getResources().getString(R.string.postWalkList_api);
         //url+="/"+ownerDetails.getOwnerId();
         url+="/"+id;
         final List<String> stList=new ArrayList<>();
@@ -1090,11 +1078,11 @@ public class ApiVolley  {
     //Dog Walk Api class ends
 
     //------------------Dog Mate Api class starts--------------------
-    public  void postDogMate(final PostMate activity, final MateInfo mateInfo,final int method)
+    public  void postDogMate(final PostMate activity, final Mateinfo mateinfo, final int method)
     {
         String url = activity.getResources().getString(R.string.postMate_api);
         if(method == Request.Method.PUT || method == Request.Method.DELETE)
-            url +="/"+mateInfo.getMateInfoId();
+            url +="/"+ mateinfo.getMateInfoId();
 
         final List<String> stList=new ArrayList<>();
 
@@ -1106,7 +1094,7 @@ public class ApiVolley  {
 //        JsonObject obj1 = new JsonParser().parse(gson.toJson(walkInfo)).getAsJsonObject();
         JSONObject obj=null;
         try {
-            obj =new JSONObject( objectMapper.writeValueAsString(mateInfo));
+            obj =new JSONObject( objectMapper.writeValueAsString(mateinfo));
         }catch (Exception e)
         {
             Log.e("JSONPARSE", e.getMessage());
@@ -1173,10 +1161,10 @@ public class ApiVolley  {
 
     }
 
-    public  void acceptAMate(final RequestsMate activity, final MateInfo mateInfo)
+    public  void acceptAMate(final RequestsMate activity, final Mateinfo mateinfo)
     {
         String url =activity.getResources().getString(R.string.postMate_api);
-        url+="/"+mateInfo.getMateInfoId();
+        url+="/"+ mateinfo.getMateInfoId();
         final List<String> stList=new ArrayList<>();
 
         final ObjectMapper objectMapper=new ObjectMapper();
@@ -1185,7 +1173,7 @@ public class ApiVolley  {
         objectMapper.setDateFormat(sdf);
         JSONObject obj=null;
         try {
-            obj =new JSONObject( objectMapper.writeValueAsString(mateInfo));
+            obj =new JSONObject( objectMapper.writeValueAsString(mateinfo));
         }catch (Exception e)
         {
             Log.e("JSONPARSE", e.getMessage());
@@ -1267,11 +1255,11 @@ public class ApiVolley  {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<MateInfo> list=null;
+                        List<Mateinfo> list=null;
                         try {
 
 
-                            list=objectMapper.readValue(response.toString(),new TypeReference<List<MateInfo>>(){});
+                            list=objectMapper.readValue(response.toString(),new TypeReference<List<Mateinfo>>(){});
                             activity.populateData(list);
                         }
                         catch (Exception e)
@@ -1314,7 +1302,7 @@ public class ApiVolley  {
 
     }
 
-    public  void requestAMate(final AvailableMate activity, final MateReq mateReq)
+    public  void requestAMate(final AvailableMate activity, final Matereq matereq)
     {
 
         String url =activity.getResources().getString(R.string.requestAMate_api);
@@ -1330,7 +1318,7 @@ public class ApiVolley  {
         JSONObject obj=null;
         try {
 
-            obj = new JSONObject(objectMapper.writeValueAsString(mateReq));
+            obj = new JSONObject(objectMapper.writeValueAsString(matereq));
         }
         catch(Exception e){
             Log.e("JOSNPARSE",e.getMessage());
@@ -1340,7 +1328,7 @@ public class ApiVolley  {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        List<MateInfo> list=null;
+                        List<Mateinfo> list=null;
                         try {
 
 
@@ -1433,11 +1421,11 @@ public class ApiVolley  {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        List<MateInfo> list=null;
+                        List<Mateinfo> list=null;
                         try {
 
 
-                            //list=objectMapper.readValue(response.toString(),new TypeReference<List<MateInfo>>(){});
+                            //list=objectMapper.readValue(response.toString(),new TypeReference<List<Mateinfo>>(){});
                         }
                         catch (Exception e)
                         {
@@ -1520,11 +1508,11 @@ public class ApiVolley  {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<MateInfo> list=null;
+                        List<Mateinfo> list=null;
                         try {
 
 
-                            list=objectMapper.readValue(response.toString(),new TypeReference<List<MateInfo>>(){});
+                            list=objectMapper.readValue(response.toString(),new TypeReference<List<Mateinfo>>(){});
                         }
                         catch (Exception e)
                         {
@@ -1581,11 +1569,11 @@ public class ApiVolley  {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<MateReq> list=null;
+                        List<Matereq> list=null;
                         try {
 
 
-                            list=objectMapper.readValue(response.toString(),new TypeReference<List<MateReq>>(){});
+                            list=objectMapper.readValue(response.toString(),new TypeReference<List<Matereq>>(){});
                         }
                         catch (Exception e)
                         {
@@ -1644,7 +1632,7 @@ public class ApiVolley  {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<MateReq> list=null;
+                        List<Matereq> list=null;
                         try {
 
 
@@ -1690,7 +1678,7 @@ public class ApiVolley  {
 
     }
 
-    public void getMateInfo(final HistoryDogMate historyDogMate, final MateInfo mateinfo) {
+    public void getMateInfo(final HistoryDogMate historyDogMate, final Mateinfo mateinfo) {
         String url =historyDogMate.getResources().getString(R.string.mate_info_api);
 //        url+="/1";
         final ObjectMapper objectMapper=new ObjectMapper();
@@ -1702,12 +1690,12 @@ public class ApiVolley  {
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        MateInfo[] mateInfoArray=new MateInfo[100];
+                        Mateinfo[] mateinfoArray =new Mateinfo[100];
 
                         try {
 
                             try {
-                                mateInfoArray=objectMapper.readValue(response.toString(), MateInfo[].class);
+                                mateinfoArray =objectMapper.readValue(response.toString(), Mateinfo[].class);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -1717,7 +1705,7 @@ public class ApiVolley  {
                             Log.e("JSONPARSE",e.getMessage());
                         }
 
-                        historyDogMate.displayInUI(mateInfoArray);
+                        historyDogMate.displayInUI(mateinfoArray);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -1911,7 +1899,7 @@ public class ApiVolley  {
     {
 
         String url =historyDogWalk.getResources().getString(R.string.walkers_info_api);
-        //url+="/1";
+       // url+="/1";
         final ObjectMapper objectMapper=new ObjectMapper();
 
         // Request a string response from the provided URL.

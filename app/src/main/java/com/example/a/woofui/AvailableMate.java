@@ -14,24 +14,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.example.a.api.ApiVolley;
 import com.example.a.model.DogDetails;
-import com.example.a.model.MateInfo;
-import com.example.a.model.MateReq;
-import com.example.a.model.OwnerDetails;
-import com.example.a.model.WalkInfo;
-import com.example.a.model.WalkReq;
+import com.example.a.model.Mateinfo;
+import com.example.a.model.Matereq;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -50,7 +42,7 @@ public class AvailableMate extends Fragment {
         return view;
     }
 
-    public  void populateData(List<MateInfo> list)
+    public  void populateData(List<Mateinfo> list)
     {
         String url=getResources().getString(R.string.image_url);
         adapter=new AvailableMateRecyclerAdapter(url,list,getFragmentManager());
@@ -87,7 +79,7 @@ class AvailableMateRecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.
 
 
     FragmentManager fragmentManager;
-    List<MateInfo> data;
+    List<Mateinfo> data;
     String url;
     int layout;
 
@@ -106,7 +98,7 @@ class AvailableMateRecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.
 
         }
     }
-    public AvailableMateRecyclerAdapter(String url,List<MateInfo> dataSet,FragmentManager fragmentManager) {
+    public AvailableMateRecyclerAdapter(String url, List<Mateinfo> dataSet, FragmentManager fragmentManager) {
         this.url=url;
         this.fragmentManager=fragmentManager;
         this.data=dataSet;
@@ -145,15 +137,15 @@ class AvailableMateRecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.
             public void onClick(View view) {
 
                 ApiVolley api=new ApiVolley();
-                MateInfo mateInfo1=data.get(Integer.valueOf(view.getTag().toString().trim()));
-                MateReq mateReq=new MateReq();
+                Mateinfo mateinfo1 =data.get(Integer.valueOf(view.getTag().toString().trim()));
+                Matereq matereq =new Matereq();
                 //Set current owner
-                mateReq.setDogId(new DogDetails(2));
-                mateReq.setReqId(new MateInfo(data.get(Integer.valueOf(view.getTag().toString())).getMateInfoId()));
+                matereq.setDogId(new DogDetails(2));
+                matereq.setReqId(new Mateinfo(data.get(Integer.valueOf(view.getTag().toString())).getMateInfoId()));
                 Date date=new Date();
-                mateReq.setMateReqDate(date);
+                matereq.setMateReqDate(date);
 
-                api.requestAMate((AvailableMate) fragmentManager.findFragmentByTag("availableMate"),mateReq);
+                api.requestAMate((AvailableMate) fragmentManager.findFragmentByTag("availableMate"), matereq);
                 data.remove(holder.getAdapterPosition());
 
                 notifyItemRemoved(Integer.valueOf(view.getTag().toString()));

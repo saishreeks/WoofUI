@@ -14,8 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a.api.ApiVolley;
-import com.example.a.model.MateInfo;
-import com.example.a.model.MateReq;
+import com.example.a.model.Mateinfo;
+import com.example.a.model.Matereq;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class RequestsMate extends Fragment {
         api.getPendingRequestsMateList(this,1);
         return view;
     }
-    public  void populateData(List<MateReq> list)
+    public  void populateData(List<Matereq> list)
     {
         String url=getResources().getString(R.string.image_url);
         adapter=new PendingReqMateRecyclerAdapter (url,list,getFragmentManager());
@@ -59,7 +59,7 @@ public class RequestsMate extends Fragment {
 
     public  void mateAccepted(Boolean status){
 
-        String text="Cancelled Successfully";
+        String text="Accepted Successfully";
         if(!status)
             text="Some error occured";
         Snackbar.make(getActivity().findViewById(R.id.container),text,Snackbar.LENGTH_SHORT).show();
@@ -89,7 +89,7 @@ class PendingReqMateRecyclerAdapter extends RecyclerView.Adapter<com.example.a.w
 
 
 
-    List<MateReq> data;
+    List<Matereq> data;
     int layout;
     FragmentManager fragmentManager;
     String url;
@@ -110,7 +110,7 @@ class PendingReqMateRecyclerAdapter extends RecyclerView.Adapter<com.example.a.w
 
         }
     }
-    public PendingReqMateRecyclerAdapter(String url,List<MateReq> dataSet,FragmentManager fragmentManager) {
+    public PendingReqMateRecyclerAdapter(String url, List<Matereq> dataSet, FragmentManager fragmentManager) {
         this.url=url;
         this.fragmentManager=fragmentManager;
         this.data=dataSet;
@@ -131,13 +131,13 @@ class PendingReqMateRecyclerAdapter extends RecyclerView.Adapter<com.example.a.w
             public void onClick(View view) {
 
                 ApiVolley api=new ApiVolley();
-                MateReq mateReq=data.get(holder.getAdapterPosition());
+                Matereq matereq =data.get(holder.getAdapterPosition());
 
                 //Set current owner
 
-                MateInfo mateInfo = mateReq.getReqId();
-                mateInfo.setDogId2(mateReq.getDogId());
-                api.acceptAMate((RequestsMate) fragmentManager.findFragmentByTag("requestsMate"),mateInfo);
+                Mateinfo mateinfo = matereq.getReqId();
+                mateinfo.setDogId2(matereq.getDogId());
+                api.acceptAMate((RequestsMate) fragmentManager.findFragmentByTag("requestsMate"), mateinfo);
                 data.remove(holder.getAdapterPosition());
 
                 notifyItemRemoved(holder.getAdapterPosition());
@@ -154,11 +154,11 @@ class PendingReqMateRecyclerAdapter extends RecyclerView.Adapter<com.example.a.w
             public void onClick(View view) {
 
                 ApiVolley api=new ApiVolley();
-                MateReq mateReq=data.get(holder.getAdapterPosition());
+                Matereq matereq =data.get(holder.getAdapterPosition());
 
                 //Set current owner
 
-                api.cancelAMate((RequestsMate) fragmentManager.findFragmentByTag("requestsMate"),mateReq.getMateReqId());
+                api.cancelAMate((RequestsMate) fragmentManager.findFragmentByTag("requestsMate"), matereq.getMateReqId());
                 data.remove(holder.getAdapterPosition());
 
                 notifyItemRemoved(holder.getAdapterPosition());

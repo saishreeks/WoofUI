@@ -70,6 +70,10 @@ public class ProfileActivity extends AppCompatActivity {
                         Intent dogMate = new Intent(getApplicationContext(), MateActivity.class);
                         startActivity(dogMate);
                         break;
+                    case R.id.DogWalk:
+                        Intent dogWalk = new Intent(getApplicationContext(), WalkActivity.class);
+                        startActivity(dogWalk);
+                        break;
                     case R.id.history:
                         Intent history = new Intent(getApplicationContext(), HistoryActivity.class);
                         startActivity(history);

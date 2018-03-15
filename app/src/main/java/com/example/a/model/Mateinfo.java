@@ -5,7 +5,7 @@ package com.example.a.model;
  */
 import java.util.Date;
 
-public class MateInfo {
+public class Mateinfo {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,10 +18,10 @@ public class MateInfo {
 
     private DogDetails dogId;
 
-    public MateInfo() {
+    public Mateinfo() {
     }
 
-    public MateInfo(Integer mateInfoId) {
+    public Mateinfo(Integer mateInfoId) {
         this.mateInfoId = mateInfoId;
     }
 
@@ -78,10 +78,10 @@ public class MateInfo {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MateInfo)) {
+        if (!(object instanceof Mateinfo)) {
             return false;
         }
-        MateInfo other = (MateInfo) object;
+        Mateinfo other = (Mateinfo) object;
         if ((this.mateInfoId == null && other.mateInfoId != null) || (this.mateInfoId != null && !this.mateInfoId.equals(other.mateInfoId))) {
             return false;
         }
@@ -90,7 +90,7 @@ public class MateInfo {
 
     @Override
     public String toString() {
-        return "web.Mateinfo[ mateInfoId=" + mateInfoId + " ]";
+        return "woofw.Mateinfo[ mateInfoId=" + mateInfoId + " ]";
     }
 
 

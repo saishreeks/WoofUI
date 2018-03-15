@@ -1,11 +1,9 @@
 package com.example.a.model;
-import com.example.a.model.DogDetails;
-import com.example.a.model.MateInfo;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class MateReq implements Serializable {
+public class Matereq implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -15,12 +13,12 @@ public class MateReq implements Serializable {
 
     private DogDetails dogId;
 
-    private MateInfo reqId;
+    private Mateinfo reqId;
 
-    public MateReq() {
+    public Matereq() {
     }
 
-    public MateReq(Integer mateReqId) {
+    public Matereq(Integer mateReqId) {
         this.mateReqId = mateReqId;
     }
 
@@ -48,11 +46,11 @@ public class MateReq implements Serializable {
         this.dogId = dogId;
     }
 
-    public MateInfo getReqId() {
+    public Mateinfo getReqId() {
         return reqId;
     }
 
-    public void setReqId(MateInfo reqId) {
+    public void setReqId(Mateinfo reqId) {
         this.reqId = reqId;
     }
 
@@ -66,10 +64,10 @@ public class MateReq implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MateReq)) {
+        if (!(object instanceof Matereq)) {
             return false;
         }
-        MateReq other = (MateReq) object;
+        Matereq other = (Matereq) object;
         if ((this.mateReqId == null && other.mateReqId != null) || (this.mateReqId != null && !this.mateReqId.equals(other.mateReqId))) {
             return false;
         }
@@ -78,7 +76,7 @@ public class MateReq implements Serializable {
 
     @Override
     public String toString() {
-        return "webwoof.MateReq[ mateReqId=" + mateReqId + " ]";
+        return "web.Matereq[ mateReqId=" + mateReqId + " ]";
     }
 
 }

@@ -109,7 +109,7 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
             idList.add(0);
             for (DogDetails d:lst) {
                 list.add(d.getName());
-                idList.add(d.getId());
+                idList.add(d.getDogId());
 
             }
 
@@ -128,7 +128,7 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
         ApiVolley api=new ApiVolley(getContext());
 
         DogDetails dogDetails=new DogDetails();
-        dogDetails.setId(idList.get(list.indexOf(dogs.getSelectedItem())));
+        dogDetails.setDogId(idList.get(list.indexOf(dogs.getSelectedItem())));
         walkInfo.setDogId(dogDetails);
         SimpleDateFormat frmt=new SimpleDateFormat("dd-MM-yyyy");
 

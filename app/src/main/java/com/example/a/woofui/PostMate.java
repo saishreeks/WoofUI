@@ -21,8 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.example.a.api.ApiVolley;
-import com.example.a.model.MateInfo;
-import com.example.a.model.WalkInfo;
+import com.example.a.model.Mateinfo;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -89,7 +88,7 @@ public class PostMate extends Fragment implements View.OnClickListener{
     public PostMate(){
 
     }
-    public  void populateData(List<MateInfo> list)
+    public  void populateData(List<Mateinfo> list)
     {
         String url=getResources().getString(R.string.image_url);
         adapter=new PostMateRecyclerAdapter(url, list,getFragmentManager());
@@ -150,9 +149,9 @@ class PostMateRecyclerAdapter extends RecyclerView.Adapter<PostMateRecyclerAdapt
             case R.id.btnEdit:
                 Toast.makeText(view.getContext(),"Edit"+view.getTag(),Toast.LENGTH_SHORT).show();
                 PostWalkInfo postWalkInfo = new PostWalkInfo();
-                MateInfo mateInfo=data.get(Integer.valueOf(view.getTag().toString().trim()));
+                Mateinfo mateinfo =data.get(Integer.valueOf(view.getTag().toString().trim()));
                 Bundle bundle = new Bundle();
-                bundle.putStringArray("walkInfo",new String[]{mateInfo.getMateInfoId().toString(),mateInfo.getDogId().getId().toString(),mateInfo.getMateDate().toString(),mateInfo.getMateDate().toString()});
+                bundle.putStringArray("walkInfo",new String[]{mateinfo.getMateInfoId().toString(), mateinfo.getDogId().getDogId().toString(), mateinfo.getMateDate().toString(), mateinfo.getMateDate().toString()});
                 postWalkInfo.setArguments(bundle);
 
                 //postWalkInfo.date.setText(walkInfo.getWalkInfoDate().toString());
@@ -162,8 +161,8 @@ class PostMateRecyclerAdapter extends RecyclerView.Adapter<PostMateRecyclerAdapt
                 break;
             case R.id.btnCancel:
                 ApiVolley api=new ApiVolley();
-                MateInfo mateInfo1=data.get(Integer.valueOf(view.getTag().toString().trim()));
-                api.postDogMate((PostMate)fragmentManager.findFragmentByTag("postMate"),mateInfo1, Request.Method.DELETE);
+                Mateinfo mateinfo1 =data.get(Integer.valueOf(view.getTag().toString().trim()));
+                api.postDogMate((PostMate)fragmentManager.findFragmentByTag("postMate"), mateinfo1, Request.Method.DELETE);
                 Toast.makeText(view.getContext(),"can"+view.getTag(),Toast.LENGTH_SHORT).show();
                 break;
 
@@ -173,7 +172,7 @@ class PostMateRecyclerAdapter extends RecyclerView.Adapter<PostMateRecyclerAdapt
     }
 
 
-    List<MateInfo> data;
+    List<Mateinfo> data;
     String imgUrl;
     FragmentManager fragmentManager;
     //int layout;
@@ -195,7 +194,7 @@ class PostMateRecyclerAdapter extends RecyclerView.Adapter<PostMateRecyclerAdapt
             //this.textView=(Viw)textView;
         }
     }
-    public PostMateRecyclerAdapter(String imgUrl,List<MateInfo> dataSet,FragmentManager fragmentManager) {
+    public PostMateRecyclerAdapter(String imgUrl, List<Mateinfo> dataSet, FragmentManager fragmentManager) {
 
         this.fragmentManager=fragmentManager;
         this.imgUrl=imgUrl;
@@ -249,7 +248,9 @@ class PostMateRecyclerAdapter extends RecyclerView.Adapter<PostMateRecyclerAdapt
 
     @Override
     public int getItemCount() {
+        if(data!=null)
         return data.size();
+        return  0;
     }
 }
 

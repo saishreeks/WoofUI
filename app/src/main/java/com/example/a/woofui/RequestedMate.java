@@ -17,12 +17,8 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.example.a.api.ApiVolley;
-import com.example.a.model.MateReq;
-import com.example.a.model.OwnerDetails;
-import com.example.a.model.WalkInfo;
-import com.example.a.model.WalkReq;
+import com.example.a.model.Matereq;
 
-import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -43,7 +39,7 @@ public class RequestedMate extends Fragment {
         api.getRequestedMateList(this,2);
         return view;
     }
-    public  void populateData(List<MateReq> list)
+    public  void populateData(List<Matereq> list)
     {
         String url=getResources().getString(R.string.image_url);
         adapter=new RequestedMateRecyclerAdapter(url,list,getFragmentManager());
@@ -81,7 +77,7 @@ class RequestedMateRecyclerAdapter extends RecyclerView.Adapter<com.example.a.wo
 
 
 
-    List<MateReq> data;
+    List<Matereq> data;
     int layout;
     String url;
     FragmentManager fragmentManager;
@@ -101,7 +97,7 @@ class RequestedMateRecyclerAdapter extends RecyclerView.Adapter<com.example.a.wo
 
         }
     }
-    public RequestedMateRecyclerAdapter(String url, List<MateReq> dataSet, FragmentManager frag) {
+    public RequestedMateRecyclerAdapter(String url, List<Matereq> dataSet, FragmentManager frag) {
 
         this.fragmentManager=frag;
         this.url=url;
@@ -140,11 +136,11 @@ class RequestedMateRecyclerAdapter extends RecyclerView.Adapter<com.example.a.wo
             public void onClick(View view) {
 
                 ApiVolley api=new ApiVolley();
-                MateReq mateReq=data.get(holder.getAdapterPosition());
+                Matereq matereq =data.get(holder.getAdapterPosition());
 
                 //Set current owner
 
-                api.cancelAMate((RequestedMate) fragmentManager.findFragmentByTag("requestedMate"),mateReq.getMateReqId());
+                api.cancelAMate((RequestedMate) fragmentManager.findFragmentByTag("requestedMate"), matereq.getMateReqId());
                 data.remove(holder.getAdapterPosition());
 
                 notifyItemRemoved(holder.getAdapterPosition());

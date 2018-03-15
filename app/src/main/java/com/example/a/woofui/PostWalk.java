@@ -126,7 +126,7 @@ public class PostWalk extends Fragment implements View.OnClickListener{
                 PostWalkInfo postWalkInfo = new PostWalkInfo();
                 WalkInfo walkInfo=data.get(Integer.valueOf(view.getTag().toString().trim()));
                 Bundle bundle = new Bundle();
-                bundle.putStringArray("walkInfo",new String[]{walkInfo.getWalkInfoId().toString(),walkInfo.getDogId().getId().toString(),walkInfo.getWalkInfoDate().toString(),walkInfo.getWalkInfoDate().toString()});
+                bundle.putStringArray("walkInfo",new String[]{walkInfo.getWalkInfoId().toString(),walkInfo.getDogId().getDogId().toString(),walkInfo.getWalkInfoDate().toString(),walkInfo.getWalkInfoDate().toString()});
                 postWalkInfo.setArguments(bundle);
 
                 //postWalkInfo.date.setText(walkInfo.getWalkInfoDate().toString());
@@ -204,7 +204,7 @@ public class PostWalk extends Fragment implements View.OnClickListener{
 
         holder.name.setText(data.get(position).getDogId().getName());
         holder.date.setText(data.get(position).getWalkInfoDate().toString());
-        holder.time.setText(data.get(position).getWalkInfoDate().toString());
+        //githolder.time.setText(data.get(position).getFromTime().toString() +" - "+ data.get(position).getToTime().toString());
         holder.edit.setOnClickListener(this);
         holder.edit.setTag(position);
         holder.cancel.setOnClickListener(this);

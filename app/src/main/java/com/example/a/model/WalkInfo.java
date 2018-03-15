@@ -1,5 +1,6 @@
 package com.example.a.model;
 
+import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -14,7 +15,26 @@ public class WalkInfo {
     private DogDetails dogId;
 
     private OwnerDetails walkerId;
-    private Date walkTime;
+
+    public Date getFromTime() {
+        return fromTime;
+    }
+
+    public void setFromTime(Date fromTime) {
+        this.fromTime = fromTime;
+    }
+
+    public Date getToTime() {
+        return toTime;
+    }
+
+    public void setToTime(Date toTime) {
+        this.toTime = toTime;
+    }
+
+    //private Date walkTime;
+    private Date fromTime;
+    private Date toTime;
 
 
 //    private Collection<WalkReq> walkReqCollection;
@@ -69,13 +89,6 @@ public class WalkInfo {
 //        this.walkReqCollection = walkReqCollection;
 //    }
 
-    public Date getWalkTime() {
-        return walkTime;
-    }
-
-    public void setWalkTime(Date walkTime) {
-        this.walkTime = walkTime;
-    }
 
 
     @Override
@@ -100,6 +113,6 @@ public class WalkInfo {
 
     @Override
     public String toString() {
-        return "webwoof.WalkInfo[ walkInfoId=" + walkInfoId + " ]";
+        return "web.WalkInfo[ walkInfoId=" + walkInfoId + " ]";
     }
 }

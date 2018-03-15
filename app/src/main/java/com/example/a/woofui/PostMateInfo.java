@@ -22,8 +22,7 @@ import android.widget.TimePicker;
 import com.android.volley.Request;
 import com.example.a.api.ApiVolley;
 import com.example.a.model.DogDetails;
-import com.example.a.model.MateInfo;
-import com.example.a.model.WalkInfo;
+import com.example.a.model.Mateinfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -57,7 +56,7 @@ public class PostMateInfo extends DialogFragment implements View.OnClickListener
     Calendar calendar=Calendar.getInstance();
     ArrayList<String> list=new ArrayList<>();
     ArrayList<Integer> idList=new ArrayList<>();
-    MateInfo mateInfo;
+    Mateinfo mateinfo;
     ArrayAdapter<String> adapter;
 
     @Override
@@ -118,7 +117,7 @@ public class PostMateInfo extends DialogFragment implements View.OnClickListener
         idList.add(0);
         for(DogDetails d:lst){
             list.add(d.getName());
-            idList.add(d.getId());
+            idList.add(d.getDogId());
         }
 
         adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.support_simple_spinner_dropdown_item,list);
@@ -134,20 +133,20 @@ public class PostMateInfo extends DialogFragment implements View.OnClickListener
         ApiVolley api=new ApiVolley(getContext());
 
         DogDetails dogDetails=new DogDetails();
-        dogDetails.setId(idList.get(list.indexOf(dogs.getSelectedItem())));
-        mateInfo.setDogId(dogDetails);
+        dogDetails.setDogId(idList.get(list.indexOf(dogs.getSelectedItem())));
+        mateinfo.setDogId(dogDetails);
         SimpleDateFormat frmt=new SimpleDateFormat("dd-MM-yyyy");
 
 
         Date dte=frmt.parse(date.getText().toString().trim());
 
-        mateInfo.setMateDate(dte);
+        mateinfo.setMateDate(dte);
 
         int method= Request.Method.POST;
 
-        if(mateInfo.getMateInfoId()!=null)
+        if(mateinfo.getMateInfoId()!=null)
             method=Request.Method.PUT;
-        api.postDogMate((PostMate)getActivity().getSupportFragmentManager().findFragmentByTag("postMate"),mateInfo,method);
+        api.postDogMate((PostMate)getActivity().getSupportFragmentManager().findFragmentByTag("postMate"), mateinfo,method);
 
         this.dismiss();
     }
@@ -197,7 +196,7 @@ public class PostMateInfo extends DialogFragment implements View.OnClickListener
             String[] ip=getArguments().getStringArray("walkInfo");
             dogs.setSelection(Integer.valueOf(ip[1].trim()));
 
-            mateInfo.setMateInfoId(Integer.valueOf(ip[0]));
+            mateinfo.setMateInfoId(Integer.valueOf(ip[0]));
             date.setText(ip[2]);
 
         }
