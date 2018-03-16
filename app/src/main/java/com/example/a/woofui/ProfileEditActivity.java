@@ -1,6 +1,7 @@
 package com.example.a.woofui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -158,7 +159,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             bmp = null;
             try {
                 bmp = getBitmapFromUri(selectedImage);
-                bmp = imageRotation(picturePath,bmp);
+       //         bmp = imageRotation(picturePath,bmp);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -232,8 +233,11 @@ public class ProfileEditActivity extends AppCompatActivity {
     }
 
     public void saveProfile(View view) {
+
+        SharedPreferences shared = getSharedPreferences("UserObject",MODE_PRIVATE);
+        int id = shared.getInt("ownerId",0);
         ApiVolley api = new ApiVolley(getApplicationContext());
-        OwnerDetails ownerDetails = new OwnerDetails();
+        OwnerDetails ownerDetails = new OwnerDetails(id);
         ownerDetails.setName(getValueFromUI(profileEditName));
         ownerDetails.setAddress(getValueFromUI(profileEditAddress));
         ownerDetails.setOwnerEmail(getValueFromUI(profileEditEmail));

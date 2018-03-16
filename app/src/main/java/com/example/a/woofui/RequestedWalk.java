@@ -1,5 +1,7 @@
 package com.example.a.woofui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -21,6 +23,7 @@ import com.example.a.model.OwnerDetails;
 import com.example.a.model.WalkInfo;
 import com.example.a.model.WalkReq;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +42,10 @@ public class RequestedWalk extends Fragment {
         View view = inflater.inflate(R.layout.recycle_view_list,container,false);
         recyclerView = view.findViewById(R.id.recyclerview);
         ApiVolley api=new ApiVolley(getContext());
-        api.getRequestedWalkList(this,2);
+        SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
+
+
+        api.getRequestedWalkList(this,pref.getInt("ownerId",0));
         return view;
     }
     public  void populateData(List<WalkReq> list)
@@ -116,40 +122,52 @@ class RequestedRecyclerAdapter extends RecyclerView.Adapter<com.example.a.woofui
         //holder.profileImg.setImageURI();
         ImageLoader imageLoader =ApiVolley.getImageLoader();
         //"
-        imageLoader.get(  url+data.get(position).getReqId().getDogId().getPic(), new ImageLoader.ImageListener() {
+        if (data.get(position).getReqId().getDogId() != null
+                ) {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("IMG", "Image Load Error: " + error.getMessage());
-            }
 
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-                if (response.getBitmap() != null) {
-                    // load image into imageview
-                    holder.profileImg.setImageBitmap(response.getBitmap());
+            imageLoader.get(url + data.get(position).getReqId().getDogId().getPic(), new ImageLoader.ImageListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("IMG", "Image Load Error: " + error.getMessage());
                 }
-            }
-        });
+
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                    if (response.getBitmap() != null) {
+                        // load image into imageview
+                        holder.profileImg.setImageBitmap(response.getBitmap());
+                    }
+                }
+            });
+        }
         holder.name.setText(data.get(position).getReqId().getDogId().getName());
         holder.date.setText(data.get(position).getWalkReqDate().toString());
-        holder.time.setText(data.get(position).getWalkReqDate().toString());
+        SimpleDateFormat sdf =new SimpleDateFormat("HH:mm");
+        holder.time.setText(sdf.format(data.get(position).getReqId().getFromTime()) +" - " +sdf.format(data.get(position).getReqId().getToTime()));
         holder.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                ApiVolley api=new ApiVolley();
-                WalkReq walkReq=data.get(holder.getAdapterPosition());
+                try {
+                    ApiVolley api = new ApiVolley();
+                    WalkReq walkReq = data.get(holder.getAdapterPosition());
 
-                //Set current owner
+                    //Set current owner
 
-                api.cancelAWalk((RequestedWalk) fragmentManager.findFragmentByTag("requestedWalk"),walkReq.getWalkReqId());
-                data.remove(holder.getAdapterPosition());
+                    api.cancelAWalk((RequestedWalk) fragmentManager.findFragmentByTag("requestedWalk"), walkReq.getWalkReqId());
+                    data.remove(holder.getAdapterPosition());
 
-                notifyItemRemoved(holder.getAdapterPosition());
-                notifyItemRangeChanged(holder.getAdapterPosition(), data.size());
+                    notifyItemRemoved(holder.getAdapterPosition());
+                    notifyItemRangeChanged(holder.getAdapterPosition(), data.size());
 
-                Toast.makeText(view.getContext(),"Request"+view.getTag(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), "Request" + view.getTag(), Toast.LENGTH_SHORT).show();
+                }
+                catch (Exception e)
+                {
+                    Log.e("Exception",e.getMessage());
+                }
 
             }
         });

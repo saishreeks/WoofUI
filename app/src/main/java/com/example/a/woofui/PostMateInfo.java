@@ -56,7 +56,7 @@ public class PostMateInfo extends DialogFragment implements View.OnClickListener
     Calendar calendar=Calendar.getInstance();
     ArrayList<String> list=new ArrayList<>();
     ArrayList<Integer> idList=new ArrayList<>();
-    Mateinfo mateinfo;
+    Mateinfo mateinfo=new Mateinfo();
     ArrayAdapter<String> adapter;
 
     @Override
@@ -158,20 +158,20 @@ public class PostMateInfo extends DialogFragment implements View.OnClickListener
         View v = inflater.inflate(R.layout.post_mate_info,null);
         builder.setView(v);
         date = (EditText) v.findViewById(R.id.date);
-        toTime = (EditText) v.findViewById(R.id.toTime);
-        fromTime = (EditText) v.findViewById(R.id.fromTime);
+        //toTime = (EditText) v.findViewById(R.id.toTime);
+        //fromTime = (EditText) v.findViewById(R.id.fromTime);
         postBtn = (Button)v.findViewById(R.id.postBtn);
         date.setOnClickListener(this);
-        toTime.setOnClickListener(this);
-        fromTime.setOnClickListener(this);
 
         dogs=(Spinner)v.findViewById(R.id.spinner);
         postBtn.setOnClickListener(this);
         //SpinnerAdapter adapter=dogs.getAdapter();
-        SharedPreferences sharedPreferences=getActivity().getPreferences(Context.MODE_PRIVATE);
+
+        SharedPreferences sharedPreferences=getActivity().getSharedPreferences("UserObject",Context.MODE_PRIVATE);
 
         ApiVolley api = new ApiVolley(getContext());
-        api.getDogDetailsDD(this, 1);
+
+        api.getDogDetailsDD(this,sharedPreferences.getInt("ownerId",0));
         Gson gson=new Gson();
 
         String json=sharedPreferences.getString(getString(R.string.dogDetails),null);
@@ -205,4 +205,3 @@ public class PostMateInfo extends DialogFragment implements View.OnClickListener
         return builder.create();
     }
 }
-

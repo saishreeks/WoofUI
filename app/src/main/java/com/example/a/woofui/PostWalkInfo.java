@@ -166,11 +166,12 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
         dogs=(Spinner)v.findViewById(R.id.spinner);
         postBtn.setOnClickListener(this);
         //SpinnerAdapter adapter=dogs.getAdapter();
-        SharedPreferences sharedPreferences=getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences=getActivity().getSharedPreferences("UserObject",Context.MODE_PRIVATE);
 
         //Integer.valueOf(sharedPreferences.getString("ownerId")
         ApiVolley api=new ApiVolley(getContext());
-        api.getDogDetailsDD(this,1);
+
+        api.getDogDetailsDD(this,sharedPreferences.getInt("ownerId",0));
         Gson gson=new Gson();
 
         String json=sharedPreferences.getString(getString(R.string.dogDetails),null);
@@ -193,7 +194,8 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
             dogs.setSelection(Integer.valueOf(ip[1].trim()));
 
             walkInfo.setWalkInfoId(Integer.valueOf(ip[0]));
-            date.setText(ip[2]);
+
+            date.setText(new SimpleDateFormat("dd-MM-yyy").format(ip[2]));
 
         }
         return builder.create();

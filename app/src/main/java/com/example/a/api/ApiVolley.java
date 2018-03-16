@@ -1,6 +1,7 @@
 package com.example.a.api;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
@@ -24,8 +25,10 @@ import com.example.a.model.Matereq;
 import com.example.a.model.OwnerDetails;
 import com.example.a.model.WalkInfo;
 import com.example.a.model.WalkReq;
+import com.example.a.woofui.AddDogInfoActivity;
 import com.example.a.woofui.AvailableMate;
 import com.example.a.woofui.AvailableWalk;
+import com.example.a.woofui.DogInfoActivity;
 import com.example.a.woofui.HistoryDogMate;
 import com.example.a.woofui.HistoryDogWalk;
 import com.example.a.woofui.PostMate;
@@ -39,6 +42,7 @@ import com.example.a.woofui.RequestedMate;
 import com.example.a.woofui.RequestedWalk;
 import com.example.a.woofui.RequestsMate;
 import com.example.a.woofui.RequestsWalk;
+import com.example.a.woofui.SignIn;
 import com.example.a.woofui.SignUpDetails;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,6 +59,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by A on 3/6/2018.
  */
@@ -63,6 +69,7 @@ public class ApiVolley  {
 
     static RequestQueue queue;
     static ImageLoader mImageLoader;
+
 
     public ApiVolley(Context context){
 
@@ -80,7 +87,7 @@ public class ApiVolley  {
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
         JSONObject obj=null;
-            try {
+        try {
             obj =new JSONObject( objectMapper.writeValueAsString(ownerDetails));
         }catch (Exception e)
         {
@@ -94,7 +101,7 @@ public class ApiVolley  {
                     @Override
                     public void onResponse(JSONObject response) {
                         //Calling function after getting response.
-                        activity.showToast(response.toString());
+                        activity.showresp();
                     }
 
                 }, new Response.ErrorListener() {
@@ -102,7 +109,7 @@ public class ApiVolley  {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.e("J",error.toString());
-
+                activity.showError();
             }
 
 
@@ -141,10 +148,10 @@ public class ApiVolley  {
 
 
         };
-    // Add the request to the RequestQueue.
-            queue.add(jsonRequest);
+        // Add the request to the RequestQueue.
+        queue.add(jsonRequest);
 
-}
+    }
 
     public  void getOwnerDetails(final SignUpDetails activity,final OwnerDetails ownerDetails)
     {
@@ -355,7 +362,7 @@ public class ApiVolley  {
 
         String url =activity.getResources().getString(R.string.dogDetails_api);
         //url+="/"+ownerDetails.getOwnerId();
-        url+="/1";
+        url+="/"+id;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
 
@@ -413,7 +420,7 @@ public class ApiVolley  {
 
         String url =activity.getResources().getString(R.string.dogDetails_api);
         //url+="/"+ownerDetails.getOwnerId();
-        url+="/1";
+        url+="/"+id;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
 
@@ -641,7 +648,7 @@ public class ApiVolley  {
         url+="/"+ownerId+ "/"+zip;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        //objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         // Request a string response from the provided URL.
         final JsonArrayRequest stringRequest = new JsonArrayRequest (Request.Method.GET, url,null,
 
@@ -704,7 +711,7 @@ public class ApiVolley  {
         //url+="/"+id;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        //objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         // Request a string response from the provided URL.
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -798,7 +805,7 @@ public class ApiVolley  {
         url+="/"+id;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        //objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         // Request a string response from the provided URL.
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -896,7 +903,7 @@ public class ApiVolley  {
         url+="/"+id;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        //objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         // Request a string response from the provided URL.
         final JsonArrayRequest stringRequest = new JsonArrayRequest (Request.Method.GET, url,null,
 
@@ -959,7 +966,7 @@ public class ApiVolley  {
         url+="/"+id;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        //objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         // Request a string response from the provided URL.
         final JsonArrayRequest stringRequest = new JsonArrayRequest (Request.Method.GET, url,null,
 
@@ -1022,7 +1029,7 @@ public class ApiVolley  {
         url+="/"+id;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+      //  objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         // Request a string response from the provided URL.
         final JsonArrayRequest stringRequest = new JsonArrayRequest (Request.Method.GET, url,null,
 
@@ -1245,10 +1252,10 @@ public class ApiVolley  {
 
         String url =activity.getResources().getString(R.string.availableMateList_api);
         //url+="/"+ownerDetails.getOwnerId();
-        url+="/"+"2"+ "/"+"1";
+        url+="/"+ownerId+ "/"+zip;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        //objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         // Request a string response from the provided URL.
         final JsonArrayRequest stringRequest = new JsonArrayRequest (Request.Method.GET, url,null,
 
@@ -1310,7 +1317,7 @@ public class ApiVolley  {
         //url+="/"+id;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+       // objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         // Request a string response from the provided URL.
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -1403,7 +1410,7 @@ public class ApiVolley  {
         url+="/"+id;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+       // objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         // Request a string response from the provided URL.
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -1501,7 +1508,7 @@ public class ApiVolley  {
         url+="/"+id;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        //objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         // Request a string response from the provided URL.
         final JsonArrayRequest stringRequest = new JsonArrayRequest (Request.Method.GET, url,null,
 
@@ -1562,7 +1569,7 @@ public class ApiVolley  {
         url+="/"+id;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        //objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         // Request a string response from the provided URL.
         final JsonArrayRequest stringRequest = new JsonArrayRequest (Request.Method.GET, url,null,
 
@@ -1625,7 +1632,7 @@ public class ApiVolley  {
         url+="/"+id;
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+       // objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         // Request a string response from the provided URL.
         final JsonArrayRequest stringRequest = new JsonArrayRequest (Request.Method.GET, url,null,
 
@@ -1761,7 +1768,7 @@ public class ApiVolley  {
 
         String url =profileActivity.getResources().getString(R.string.signup_api);
 //        url+="/"+ownerDetails.getOwnerId();
-        url+="/1";
+        url+="/"+ownerDetails.getOwnerId();
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
 
@@ -1827,7 +1834,8 @@ public class ApiVolley  {
     {
 
         String url =activity.getResources().getString(R.string.signup_api);
-        url+="/1";
+        //url+="/2";
+        url+="/"+ownerDetails.getOwnerId();
         final List<String> stList=new ArrayList<>();
         final ObjectMapper objectMapper=new ObjectMapper();
         JSONObject obj=null;
@@ -1895,11 +1903,11 @@ public class ApiVolley  {
         queue.add(jsonRequest);
 
     }
-    public  void getWalkersInfo(final HistoryDogWalk historyDogWalk, final WalkInfo walkInfo)
+    public  void getWalkersInfo(final HistoryDogWalk historyDogWalk, final int id)
     {
 
         String url =historyDogWalk.getResources().getString(R.string.walkers_info_api);
-       // url+="/1";
+        url+="/"+id;
         final ObjectMapper objectMapper=new ObjectMapper();
 
         // Request a string response from the provided URL.
@@ -1952,7 +1960,7 @@ public class ApiVolley  {
                 try {
 
 
-                    params.put("json", objectMapper.writeValueAsString(walkInfo));
+                    //params.put("json", objectMapper.writeValueAsString(walkInfo));
                 }
                 catch(Exception e)
                 {
@@ -1972,6 +1980,181 @@ public class ApiVolley  {
         queue.add(stringRequest);
 
 
+    }
+
+    public  void LoginByEmail(final SignIn activity, final OwnerDetails ownerDetails)
+    {
+        String url =activity.getResources().getString(R.string.login_api);
+        //url+="/"+ownerDetails.getOwnerId();
+        url+="/"+ownerDetails.getOwnerEmail().toString()+"/"+ownerDetails.getPassword().toString();
+        final List<String> stList=new ArrayList<>();
+        final ObjectMapper objectMapper=new ObjectMapper();
+
+        // Request a string response from the provided URL.
+        final JsonObjectRequest stringRequest = new JsonObjectRequest (Request.Method.GET, url,null,
+
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        activity.verify(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.e("J",error.toString());
+
+            }
+
+
+        }){
+
+            @Override
+            public Map<String,String> getHeaders()
+            {
+
+                Map<String, String>  params = new HashMap<>();
+                params.put("Accept","application/json");
+                return  params;
+            }
+
+            @Override
+            public String getBodyContentType()
+            {
+                return "application/json";
+            }
+
+        };
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
+
+    public  void postDogDetails(final AddDogInfoActivity activity, final DogDetails dogDetails)
+    {
+        String url =activity.getResources().getString(R.string.dogdetail_api);
+        final List<String> stList=new ArrayList<>();
+        final ObjectMapper objectMapper=new ObjectMapper();
+        JSONObject obj=null;
+        try {
+            obj =new JSONObject( objectMapper.writeValueAsString(dogDetails));
+        }catch (Exception e)
+        {
+            Log.e("JSONPARSE", e.getMessage());
+        }
+
+        // Request a string response from the provided URL.
+        final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,obj,
+
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Calling function after getting response.
+                        activity.showresp();
+                    }
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.e("J",error.toString());
+                System.out.println(error.toString());
+                activity.showerror();
+            }
+
+
+        }){
+            @Override
+            public Map<String,String> getHeaders()
+            {
+
+                Map<String, String>  params = new HashMap<>();
+                params.put("Accept","application/json");
+                return  params;
+            }
+            @Override
+            public String getBodyContentType()
+            {
+                return "application/json";
+            }
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                Response res= super.parseNetworkResponse(response);
+                if(response.statusCode>=200 || response.statusCode<=204)
+                {
+                    try {
+                        return  Response.success(new JSONObject("{\"d\":\"d\"}"), null);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e("JSONParse", e.getMessage());
+                        return  res;
+                    }
+                }
+                else
+                    return res;
+            }
+
+
+        };
+        // Add the request to the RequestQueue.
+        queue.add(jsonRequest);
+
+    }
+
+    public  void getDogDetails(final DogInfoActivity activity, final DogDetails dogDetails)
+    {
+
+        String url =activity.getResources().getString(R.string.dogdetail_api);
+        //url+="/"+ownerDetails.getOwnerId();
+        //url+="/15";
+        final List<String> stList=new ArrayList<>();
+        final ObjectMapper objectMapper=new ObjectMapper();
+
+
+        // Request a string response from the provided URL.
+        final JsonArrayRequest stringRequest = new JsonArrayRequest (Request.Method.GET, url,null,
+
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        DogDetails[] dog_array = new DogDetails[100];
+                        try {
+                            dog_array = objectMapper.readValue(response.toString(),DogDetails[].class);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        activity.showToast(dog_array);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.e("J",error.toString());
+
+            }
+
+
+        }){
+
+            @Override
+            public Map<String,String> getHeaders()
+            {
+
+                Map<String, String>  params = new HashMap<>();
+                params.put("Accept","application/json");
+                return  params;
+            }
+
+            @Override
+            public String getBodyContentType()
+            {
+                return "application/json";
+            }
+
+        };
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
 

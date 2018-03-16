@@ -171,7 +171,7 @@ public class WalkActivity extends HomeActivity{
                 //PostMate postMateFragment = new PostMate();
                 manager = getSupportFragmentManager();
                 manager.beginTransaction()
-                        .replace(R.id.container, postMateFragment)
+                        .replace(R.id.container, postMateFragment,"postWalk")
                         .commit();
             }
         });

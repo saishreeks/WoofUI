@@ -7,16 +7,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/History"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-
-        >
-        <activity android:name=".WalkActivity">
+        android:theme="@style/AppTheme">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,12 +25,15 @@
         <activity
             android:name=".HistoryActivity"
             android:label="@string/title_activity_history"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity android:name=".SignIn" />
         <activity android:name=".SignUpDetails" />
-        <activity android:name=".HomeActivity"></activity>
-        <!--activity android:name=".MateActivity"></activity>-->
+        <activity android:name=".HomeActivity" />
         <activity android:name=".MateActivity" />
+        <activity android:name=".WalkActivity" />
+        <activity android:name=".HomeAmanActivity"></activity>
+        <activity android:name=".DogInfoActivity"></activity>
+        <activity android:name=".AddDogInfoActivity"></activity>
     </application>
 
 </manifest>

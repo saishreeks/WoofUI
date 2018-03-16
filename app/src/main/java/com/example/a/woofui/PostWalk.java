@@ -28,6 +28,7 @@ import com.example.a.model.DogDetails;
 import com.example.a.model.WalkInfo;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -78,7 +79,11 @@ public class PostWalk extends Fragment implements View.OnClickListener{
         recyclerView = view.findViewById(R.id.recyclerview);
 
         ApiVolley api=new ApiVolley(getContext());
-        api.getPostWalkList(this,  1);
+        SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
+
+
+
+        api.getPostWalkList(this,  pref.getInt("ownerId",0));
 
 
 
@@ -104,7 +109,10 @@ public class PostWalk extends Fragment implements View.OnClickListener{
 
             Snackbar.make(getActivity().findViewById(R.id.container),text,Snackbar.LENGTH_SHORT).show();
             ApiVolley api=new ApiVolley(getContext());
-            api.getPostWalkList(this,1);
+            SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
+
+
+            api.getPostWalkList(this,pref.getInt("ownerId",pref.getInt("ownerId",0)));
 
 
         }
@@ -204,6 +212,8 @@ public class PostWalk extends Fragment implements View.OnClickListener{
 
         holder.name.setText(data.get(position).getDogId().getName());
         holder.date.setText(data.get(position).getWalkInfoDate().toString());
+        SimpleDateFormat sdf =new SimpleDateFormat("HH:mm");
+        holder.time.setText(sdf.format(data.get(position).getFromTime()) +" - " +sdf.format(data.get(position).getToTime()));
         //githolder.time.setText(data.get(position).getFromTime().toString() +" - "+ data.get(position).getToTime().toString());
         holder.edit.setOnClickListener(this);
         holder.edit.setTag(position);

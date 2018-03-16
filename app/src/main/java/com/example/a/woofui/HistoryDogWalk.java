@@ -4,6 +4,8 @@ package com.example.a.woofui;
  * Created by saishree on 2/27/18.
  */
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -48,7 +50,10 @@ public class HistoryDogWalk extends Fragment {
                              Bundle savedInstanceState) {
         ApiVolley api = new ApiVolley(getActivity().getApplicationContext());
         WalkInfo walkInfo = new WalkInfo();
-        api.getWalkersInfo(this, walkInfo);
+        SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
+
+
+        api.getWalkersInfo(this, pref.getInt("ownerId",0));
         View rootView = inflater.inflate(R.layout.fragment_history_dogwalk, container, false);
         walkerName = new ArrayList<>();
         recyclerView = rootView.findViewById(R.id.recyclerView_history_walk);

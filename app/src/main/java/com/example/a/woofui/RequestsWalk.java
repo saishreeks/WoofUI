@@ -1,5 +1,7 @@
 package com.example.a.woofui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import com.example.a.api.ApiVolley;
 import com.example.a.model.WalkInfo;
 import com.example.a.model.WalkReq;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -36,7 +39,10 @@ public class RequestsWalk extends Fragment {
         View view = inflater.inflate(R.layout.recycle_view_list,container,false);
         recyclerView = view.findViewById(R.id.recyclerview);
         ApiVolley api=new ApiVolley(getContext());
-        api.getPendingRequestsWalkList(this,1);
+        SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
+
+
+        api.getPendingRequestsWalkList(this,pref.getInt("ownerId",0));
         return view;
     }
     public  void populateData(List<WalkReq> list)
@@ -126,6 +132,9 @@ class PendingReqRecyclerAdapter extends RecyclerView.Adapter<com.example.a.woofu
         holder.name.setText(data.get(position).getReqId().getDogId().getName());
         holder.date.setText(data.get(position).getWalkReqDate().toString());
         holder.time.setText(data.get(position).getWalkReqDate().toString());
+        SimpleDateFormat sdf =new SimpleDateFormat("HH:mm");
+        holder.time.setText(sdf.format(data.get(position).getReqId().getFromTime()) +" - " +sdf.format(data.get(position).getReqId().getToTime()));
+
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,7 +169,11 @@ class PendingReqRecyclerAdapter extends RecyclerView.Adapter<com.example.a.woofu
 
                 api.cancelAWalk((RequestsWalk) fragmentManager.findFragmentByTag("requestsWalk"),walkReq.getWalkReqId());
                 data.remove(holder.getAdapterPosition());
+                for (WalkReq walkReq1:data) {
+                    if(walkReq1.getReqId().equals(walkReq.getReqId()))
+                        data.remove(walkReq1);
 
+                }
                 notifyItemRemoved(holder.getAdapterPosition());
                 notifyItemRangeChanged(holder.getAdapterPosition(), data.size());
 

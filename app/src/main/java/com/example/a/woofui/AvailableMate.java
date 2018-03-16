@@ -1,5 +1,7 @@
 package com.example.a.woofui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -38,7 +40,8 @@ public class AvailableMate extends Fragment {
         View view = inflater.inflate(R.layout.recycle_view_list,container,false);
         recyclerView= view.findViewById(R.id.recyclerview);
         ApiVolley api=new ApiVolley(getContext());
-        api.getAvailableMateList(this,  2,1);
+        SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
+        api.getAvailableMateList(this,  pref.getInt("ownerId",0),pref.getInt("zip",95050));
         return view;
     }
 

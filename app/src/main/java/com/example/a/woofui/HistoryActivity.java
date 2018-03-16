@@ -121,6 +121,10 @@ public class HistoryActivity extends AppCompatActivity {
                         Intent dogMate = new Intent(getApplicationContext(), MateActivity.class);
                         startActivity(dogMate);
                         break;
+                    case R.id.DogWalk:
+                        Intent dogWalk = new Intent(getApplicationContext(), WalkActivity.class);
+                        startActivity(dogWalk);
+                        break;
                     case R.id.history:
                         drawerLayout.closeDrawers();
                         break;

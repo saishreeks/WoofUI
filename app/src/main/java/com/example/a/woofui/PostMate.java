@@ -103,7 +103,10 @@ public class PostMate extends Fragment implements View.OnClickListener{
         recyclerView = view.findViewById(R.id.recyclerview);
 
         ApiVolley api=new ApiVolley(getContext());
-        api.getPostMateList(this,  1);
+        SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
+
+
+        api.getPostMateList(this,  pref.getInt("ownerId",0));
 
 
 
@@ -129,8 +132,11 @@ public class PostMate extends Fragment implements View.OnClickListener{
                 text="Cancelled Successfully";
 
             Snackbar.make(getActivity().findViewById(R.id.container),text,Snackbar.LENGTH_SHORT).show();
+            SharedPreferences sharedPreferences=getActivity().getSharedPreferences("UserObject",Context.MODE_PRIVATE);
+
             ApiVolley api=new ApiVolley(getContext());
-            api.getPostMateList(this,1);
+            api.getPostMateList(this,sharedPreferences.getInt("ownerId",0));
+
 
 
         }

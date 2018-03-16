@@ -46,7 +46,8 @@ public class HomeActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 switch (id){
                     case R.id.Home:
-                        drawerLayout.closeDrawers();
+                        Intent home = new Intent(getApplicationContext(),HomeAmanActivity.class);
+                        startActivity(home);
                         break;
                     case R.id.logout:
                         Intent logout=new Intent(getApplicationContext(),SignIn.class);
@@ -91,6 +92,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        if(mToggle!=null)
         mToggle.syncState();
     }
 }

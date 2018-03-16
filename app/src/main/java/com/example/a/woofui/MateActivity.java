@@ -41,7 +41,7 @@ public class MateActivity extends HomeActivity {
         final RequestedMate requestedMateFragment = new RequestedMate();
         manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.container, postMateFragment).commit();
+        transaction.add(R.id.container, postMateFragment,"postMate").commit();
         final TextView btn_post = findViewById(R.id.post_mate);
         final TextView btn_available = findViewById(R.id.available);
         final TextView btn_requests = findViewById(R.id.requests);

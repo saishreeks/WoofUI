@@ -1,5 +1,7 @@
 package com.example.a.woofui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -22,6 +24,7 @@ import com.example.a.model.OwnerDetails;
 import com.example.a.model.WalkInfo;
 import com.example.a.model.WalkReq;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,12 +41,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AvailableWalk extends Fragment {
     RecyclerAdapter adapter;
     RecyclerView recyclerView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recycle_view_list,container,false);
         recyclerView= view.findViewById(R.id.recyclerview);
         ApiVolley api=new ApiVolley(getContext());
-        api.getAvailableWalkList(this,  1,95050);
+        SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
+
+
+        api.getAvailableWalkList(this,  pref.getInt("ownerId",0),pref.getInt("zip",95050));
         return view;
     }
 
@@ -112,7 +119,7 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> i
 
 
     @Override
-    public void onBindViewHolder(final RecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerAdapter.ViewHolder holder, final int position) {
 
         //  holder.textView.setText(dataSet[position]);
         //holder.profileImg.setImageURI();
@@ -136,27 +143,37 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> i
 
         holder.name.setText(data.get(position).getDogId().getName());
         holder.date.setText(data.get(position).getWalkInfoDate().toString());
-        holder.time.setText(data.get(position).getWalkInfoDate().toString());
+        SimpleDateFormat sdf =new SimpleDateFormat("HH:mm");
+
+        holder.time.setText(sdf.format(data.get(position).getFromTime()) +" - " +sdf.format(data.get(position).getToTime()));
         holder.request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+try {
+    ApiVolley api = new ApiVolley();
+    WalkInfo walkInfo1 = data.get(position);
+    WalkReq walkReq = new WalkReq();
+    //Set current owner
+    SharedPreferences pref = fragmentManager.findFragmentByTag("availableWalk").getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
 
-                ApiVolley api=new ApiVolley();
-                WalkInfo walkInfo1=data.get(Integer.valueOf(view.getTag().toString().trim()));
-                WalkReq walkReq=new WalkReq();
-                //Set current owner
-                walkReq.setWalkerId(new OwnerDetails(2));
-                walkReq.setReqId(new WalkInfo(data.get(Integer.valueOf(view.getTag().toString())).getWalkInfoId()));
-                Date date=new Date();
-                walkReq.setWalkReqDate(date);
 
-                api.requestAWalk((AvailableWalk) fragmentManager.findFragmentByTag("availableWalk"),walkReq);
-                data.remove(holder.getAdapterPosition());
+    walkReq.setWalkerId(new OwnerDetails(pref.getInt("ownerId", 0)));
+    walkReq.setReqId(new WalkInfo(data.get(position).getWalkInfoId()));
+    Date date = new Date();
+    walkReq.setWalkReqDate(date);
 
-                notifyItemRemoved(Integer.valueOf(view.getTag().toString()));
-                notifyItemRangeChanged(Integer.valueOf(view.getTag().toString()), data.size());
+    api.requestAWalk((AvailableWalk) fragmentManager.findFragmentByTag("availableWalk"), walkReq);
+    data.remove(holder.getAdapterPosition());
 
-                Toast.makeText(view.getContext(),"Request"+view.getTag(),Toast.LENGTH_SHORT).show();
+    notifyItemRemoved(Integer.valueOf(view.getTag().toString()));
+    notifyItemRangeChanged(Integer.valueOf(view.getTag().toString()), data.size());
+
+    Toast.makeText(view.getContext(), "Request" + view.getTag(), Toast.LENGTH_SHORT).show();
+
+} catch (Exception e)
+{
+    Log.e("Exception",e.getMessage());
+}
 
             }
         });

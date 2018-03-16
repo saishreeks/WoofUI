@@ -1,6 +1,7 @@
 package com.example.a.woofui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -135,11 +136,14 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public void onResume() {
 
+        SharedPreferences shared = getSharedPreferences("UserObject",MODE_PRIVATE);
+        int id = shared.getInt("ownerId",0);
         super.onResume();
         ApiVolley api = new ApiVolley(getApplicationContext());
-        OwnerDetails details = new OwnerDetails();
+        OwnerDetails details = new OwnerDetails(id);
+
         api.getOwnerDetails(this, details);
-        String urlForPic = getString(R.string.picDownload_api) + "/1";
+        String urlForPic = getString(R.string.picDownload_api) + "/"+id;
 
         Picasso.with(this).load(urlForPic).networkPolicy(NetworkPolicy.NO_CACHE).into(image);
 

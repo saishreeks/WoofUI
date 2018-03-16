@@ -1,5 +1,7 @@
 package com.example.a.woofui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -36,7 +38,8 @@ public class RequestsMate extends Fragment {
         View view = inflater.inflate(R.layout.recycle_view_list,container,false);
         recyclerView = view.findViewById(R.id.recyclerview);
         ApiVolley api=new ApiVolley(getContext());
-        api.getPendingRequestsMateList(this,1);
+        SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
+        api.getPendingRequestsMateList(this,pref.getInt("ownerId",0));
         return view;
     }
     public  void populateData(List<Matereq> list)

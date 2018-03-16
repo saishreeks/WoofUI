@@ -73,25 +73,48 @@
             app:layout_constraintTop_toBottomOf="@+id/walked"/>
 
         <TextView
-            android:id="@+id/history_walk_from_time"
+            android:id="@+id/text_from_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="from time"
+            android:text="From Time: "
 
             android:textColor="#635d5d"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
             app:layout_constraintTop_toBottomOf="@+id/history_walk_date"/>
 
         <TextView
-            android:id="@+id/history_walk_to_time"
+            android:id="@+id/history_walk_from_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="From Time"
+
+            android:textColor="#635d5d"
+            app:layout_constraintStart_toEndOf="@+id/text_from_time"
+            app:layout_constraintTop_toBottomOf="@+id/history_walk_date"/>
+
+        <TextView
+            android:id="@+id/text_to_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="to time"
+            android:text="To Time: "
 
             android:textColor="#635d5d"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/history_walk_from_time"/>
+
+
+        <TextView
+            android:id="@+id/history_walk_to_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="To Time"
+
+            android:textColor="#635d5d"
+            app:layout_constraintStart_toEndOf="@+id/text_to_time"
             app:layout_constraintTop_toBottomOf="@+id/history_walk_from_time"/>
 
 

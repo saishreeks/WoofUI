@@ -9,33 +9,39 @@ import java.util.Date;
 
 public class DogDetails {
 
+
+    private String gender;
+
+    private static final long serialVersionUID = 1L;
+   // @Id
+   // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Basic(optional = false)
+    //@Column(name = "dog_id")
     private Integer dogId;
-
+    //@Size(max = 50)
+   // @Column(name = "name")
     private String name;
-
+    //@Column(name = "DOB")
+    //@Temporal(TemporalType.DATE)
     private Date dob;
-
-
-    private String breed;
-
+    //@Size(max = 100)
+    //@Column(name = "pic")
     private String pic;
-
+    //@Size(max = 50)
+    //@Column(name = "breed")
+    private String breed;
+    //@OneToMany(mappedBy = "dogId")
     private Collection<Matereq> matereqCollection;
-
+    //@OneToMany(mappedBy = "dogId")
     private Collection<WalkInfo> walkInfoCollection;
-
+   // @OneToMany(mappedBy = "dogId")
     private Collection<Mateinfo> mateinfoCollection;
-
-    public void setMateinfoCollection1(Collection<Mateinfo> mateinfoCollection1) {
-        this.mateinfoCollection1 = mateinfoCollection1;
-    }
-
+//    @OneToMany(mappedBy = "dogId2")
     private Collection<Mateinfo> mateinfoCollection1;
-
-
-
-    //private Collection<Dogpics> dogpicsCollection;
-
+ //   @OneToMany(mappedBy = "dogId")
+    private Collection<Dogpics> dogpicsCollection;
+   // @JoinColumn(name = "owner_id", referencedColumnName = "owner_id")
+    //@ManyToOne
     private OwnerDetails ownerId;
 
     public DogDetails() {
@@ -85,7 +91,7 @@ public class DogDetails {
         this.breed = breed;
     }
 
-
+    //@XmlTransient
     public Collection<Matereq> getMatereqCollection() {
         return matereqCollection;
     }
@@ -94,7 +100,7 @@ public class DogDetails {
         this.matereqCollection = matereqCollection;
     }
 
-
+    //@XmlTransient
     public Collection<WalkInfo> getWalkInfoCollection() {
         return walkInfoCollection;
     }
@@ -103,29 +109,32 @@ public class DogDetails {
         this.walkInfoCollection = walkInfoCollection;
     }
 
-
+//    @XmlTransient
     public Collection<Mateinfo> getMateinfoCollection() {
         return mateinfoCollection;
-    }
-
-
-    public Collection<Mateinfo> getMateinfoCollection1() {
-        return mateinfoCollection1;
     }
 
     public void setMateinfoCollection(Collection<Mateinfo> mateinfoCollection) {
         this.mateinfoCollection = mateinfoCollection;
     }
 
+  //  @XmlTransient
+    public Collection<Mateinfo> getMateinfoCollection1() {
+        return mateinfoCollection1;
+    }
 
+    public void setMateinfoCollection1(Collection<Mateinfo> mateinfoCollection1) {
+        this.mateinfoCollection1 = mateinfoCollection1;
+    }
 
-//    public Collection<Dogpics> getDogpicsCollection() {
-//        return dogpicsCollection;
-//    }
-//
-//    public void setDogpicsCollection(Collection<Dogpics> dogpicsCollection) {
-//        this.dogpicsCollection = dogpicsCollection;
-//    }
+//    @XmlTransient
+    public Collection<Dogpics> getDogpicsCollection() {
+        return dogpicsCollection;
+    }
+
+    public void setDogpicsCollection(Collection<Dogpics> dogpicsCollection) {
+        this.dogpicsCollection = dogpicsCollection;
+    }
 
     public OwnerDetails getOwnerId() {
         return ownerId;
@@ -157,6 +166,15 @@ public class DogDetails {
 
     @Override
     public String toString() {
-        return "webw.DogDetails[ dogId=" + dogId + " ]";
+        return "woofw.DogDetails[ dogId=" + dogId + " ]";
     }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
 }
