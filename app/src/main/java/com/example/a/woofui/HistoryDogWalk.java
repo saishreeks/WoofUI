@@ -145,17 +145,9 @@ public class HistoryDogWalk extends Fragment {
                     e.printStackTrace();
                 }
                 holder.walkDate.setText(date);
-                try {
-                    fromTime = walkInfoList[i].getFromTime() == null ? null : dateFormatter(walkInfoList[i].getFromTime());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                holder.fromTime.setText(fromTime);
-                try {
-                    toTime = walkInfoList[i].getToTime() == null ? null : dateFormatter(walkInfoList[i].getToTime());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                fromTime = walkInfoList[i].getFromTime() == null ? null : walkInfoList[i].getFromTime();
+                toTime = walkInfoList[i].getToTime() == null ? null : walkInfoList[i].getToTime();
+
                 holder.fromTime.setText(toTime);
             }
         }

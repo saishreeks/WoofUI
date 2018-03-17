@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,24 +38,43 @@ public class RequestedWalk extends Fragment {
 
     RequestedRecyclerAdapter adapter;
     RecyclerView recyclerView;
+    TextView noData;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recycle_view_list,container,false);
         recyclerView = view.findViewById(R.id.recyclerview);
+        noData=view.findViewById(R.id.empty_view);
         ApiVolley api=new ApiVolley(getContext());
         SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
 
 
         api.getRequestedWalkList(this,pref.getInt("ownerId",0));
+
+
         return view;
     }
     public  void populateData(List<WalkReq> list)
     {
-        String url=getResources().getString(R.string.image_url);
-        adapter=new RequestedRecyclerAdapter(url,list,getFragmentManager());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        try {
+            String url = getResources().getString(R.string.image_url);
+            adapter = new RequestedRecyclerAdapter(url, list, getFragmentManager());
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            if (list.isEmpty()) {
+
+                recyclerView.setVisibility(View.GONE);
+                noData.setVisibility(View.VISIBLE);
+            }
+            else {
+                recyclerView.setVisibility(View.VISIBLE);
+                noData.setVisibility(View.GONE);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.e("RESOURCECHANGED",e.getMessage());
+        }
     }
 
     public  void walkCanceled(Boolean status){
@@ -62,7 +82,7 @@ public class RequestedWalk extends Fragment {
         String text="Cancelled Successfully";
         if(!status)
             text="Some error occured";
-        Snackbar.make(getActivity().findViewById(R.id.container),text,Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getActivity().findViewById(R.id.container), Html.fromHtml("<font color=\"#ffffff\">"+text+"<\"font>"),Snackbar.LENGTH_SHORT).show();
 
     }
 
@@ -122,8 +142,7 @@ class RequestedRecyclerAdapter extends RecyclerView.Adapter<com.example.a.woofui
         //holder.profileImg.setImageURI();
         ImageLoader imageLoader =ApiVolley.getImageLoader();
         //"
-        if (data.get(position).getReqId().getDogId() != null
-                ) {
+        if (data.get(position).getReqId().getDogId() != null) {
 
 
             imageLoader.get(url + data.get(position).getReqId().getDogId().getPic(), new ImageLoader.ImageListener() {
@@ -143,9 +162,9 @@ class RequestedRecyclerAdapter extends RecyclerView.Adapter<com.example.a.woofui
             });
         }
         holder.name.setText(data.get(position).getReqId().getDogId().getName());
-        holder.date.setText(data.get(position).getWalkReqDate().toString());
+        holder.date.setText(new SimpleDateFormat("dd-MM-yyy").format(data.get(position).getReqId().getWalkInfoDate()));
         SimpleDateFormat sdf =new SimpleDateFormat("HH:mm");
-        holder.time.setText(sdf.format(data.get(position).getReqId().getFromTime()) +" - " +sdf.format(data.get(position).getReqId().getToTime()));
+        holder.time.setText(data.get(position).getReqId().getFromTime() +" - " +data.get(position).getReqId().getToTime());
         holder.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

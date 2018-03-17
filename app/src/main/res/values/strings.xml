@@ -14,6 +14,8 @@
     <string name="dogDetails">dog_details</string>
     <string name="openProfile">Open</string>
     <string name="closeProfile">Close</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="picUpload_api">http://192.168.1.5:8080/WoofServer/webresources/web.ownerdetails/upload</string>
 
 

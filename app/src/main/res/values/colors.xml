@@ -6,8 +6,11 @@
     <!--<color name="textColorPrimary">#ffffff</color>-->
     <color name="defaultIcon">#656366</color>
     <color name="textColorPrimary">#000</color>
+    <color name="textWhitePrimary">#fff</color>
     <color name="textSelected">#ffff</color>
     <color name="ImageIcon">#bebcbf</color>
+    <color name="darkblue">#bfbfbf</color>
+
 
 
     <!-- checkbox/ radiobutton <color name="colorControlActivated">#ffffff</color>-->

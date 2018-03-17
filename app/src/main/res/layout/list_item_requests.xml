@@ -26,7 +26,7 @@
 
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
-            android:src="@drawable/dp"
+            android:src="@drawable/dp1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,7 @@
 
             android:text="Bhargav Maniyar"
             android:textColor="#000000"
-            android:textSize="15sp"
+            android:textSize="@dimen/main_text_size"
             app:layout_constraintStart_toEndOf="@id/profile_image"
             app:layout_constraintTop_toTopOf="@+id/profile_image" />
 
@@ -57,7 +57,7 @@
 
             android:text="10-FEB-2016"
             android:textColor="#635d5d"
-            android:textSize="10sp"
+            android:textSize="@dimen/subtext_size"
             app:layout_constraintBottom_toTopOf="@+id/time"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
             app:layout_constraintTop_toBottomOf="@+id/name" />
@@ -71,7 +71,7 @@
             android:text="10am - 1pm"
 
             android:textColor="#635d5d"
-            android:textSize="10sp"
+            android:textSize="@dimen/subtext_size"
             app:layout_constraintBottom_toBottomOf="@+id/profile_image"
             app:layout_constraintStart_toEndOf="@id/profile_image" />
 
@@ -84,7 +84,8 @@
             android:layout_marginTop="0dp"
             android:backgroundTint="@color/colorAccent"
             android:text="IGNORE"
-            android:textSize="10sp"
+            android:textSize="@dimen/btn_text_size"
+            android:textColor="@color/textWhitePrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/accept" />
@@ -98,7 +99,8 @@
             android:backgroundTint="@color/colorPrimary"
             android:text="ACCEPT"
             android:textColorLink="@color/colorAccent"
-            android:textSize="10sp"
+            android:textSize="@dimen/btn_text_size"
+            android:textColor="@color/textWhitePrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

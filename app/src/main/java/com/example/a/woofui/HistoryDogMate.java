@@ -1,6 +1,9 @@
 package com.example.a.woofui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,7 +40,10 @@ public class HistoryDogMate extends Fragment {
                              Bundle savedInstanceState) {
         ApiVolley api = new ApiVolley(getActivity().getApplicationContext());
         Mateinfo mateinfo = new Mateinfo();
-        api.getMateInfo(this, mateinfo);
+        SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
+
+
+        api.getMateInfo(this, pref.getInt("ownerId",0));
         View rootView = inflater.inflate(R.layout.fragment_history_dogwalk, container, false);
         mateinfoDetails = new ArrayList<>();
         recyclerView = rootView.findViewById(R.id.recyclerView_history_walk);

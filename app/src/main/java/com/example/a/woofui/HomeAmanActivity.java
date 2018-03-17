@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeAmanActivity extends AppCompatActivity {
+public class HomeAmanActivity extends NavigationDrawer {
 
     private Toolbar toolBar;
     private DrawerLayout drawerLayout;
@@ -30,27 +30,30 @@ public class HomeAmanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_aman);
-        navigation = (NavigationView) findViewById(R.id.navigation);
-        View navView =  navigation.inflateHeaderView(R.layout.nav_header);
-//reference to views
-        CircleImageView imgvw = (CircleImageView) navView.findViewById(R.id.prof_image);
-        TextView tv = (TextView)navView.findViewById(R.id.txtNavHeader);
-//set views
-        imgvw.setImageResource(R.drawable.dp);
-        tv.setText("Bhargav Maniyar");
+//        navigation = (NavigationView) findViewById(R.id.navigation);
+//        View navView =  navigation.inflateHeaderView(R.layout.nav_header);
+////reference to views
+//        CircleImageView imgvw = (CircleImageView) navView.findViewById(R.id.prof_image);
+//        TextView tv = (TextView)navView.findViewById(R.id.txtNavHeader);
+////set views
+//        imgvw.setImageResource(R.drawable.dp1);
+//        tv.setText("Bhargav Maniyar");
 
         //navigation.setNavigationItemSelectedListener(this);
+
+        initialization(R.id.nav_home);
 
         session = new Session(this);
         if(!session.loggedin()) {
             Intent logout=new Intent(getApplicationContext(),SignIn.class);
             startActivity(logout);
         }
-        initInstances();
+
+        //initInstances();
         initRecycleView();
     }
 
-    private void initInstances(){
+  /*  private void initInstances(){
         toolBar = (Toolbar) findViewById(R.id.act_toolbar);
         setSupportActionBar(toolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,11 +101,11 @@ public class HomeAmanActivity extends AppCompatActivity {
             }
         });
     }
-
+*/
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mToggle.syncState();
+//        mToggle.syncState();
     }
 
     private void initRecycleView()

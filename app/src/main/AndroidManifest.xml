@@ -34,6 +34,20 @@
         <activity android:name=".HomeAmanActivity"></activity>
         <activity android:name=".DogInfoActivity"></activity>
         <activity android:name=".AddDogInfoActivity"></activity>
+        <service
+            android:name="com.example.a.Listener.FCMListenerService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.example.a.Listener.MyInstanceIDListenerService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

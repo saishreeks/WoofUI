@@ -82,6 +82,8 @@ public class SignIn extends AppCompatActivity  implements  View.OnClickListener{
         //System.out.println(json);
         SharedPreferences shared = getSharedPreferences("UserObject",MODE_PRIVATE);
         int id = shared.getInt("ownerId",0);
+        ApiVolley apiVolley=new ApiVolley(getApplicationContext());
+        apiVolley.updateToken(getApplicationContext(),shared.getString("deviceToken",null),shared.getInt("ownerId",0));
         String zip = shared.getString("zip",null);
         System.out.println("In id" + id + " in zip" + zip);
 

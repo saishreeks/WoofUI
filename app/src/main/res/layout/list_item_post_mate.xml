@@ -26,7 +26,7 @@
 
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
-            android:src="@drawable/dp"
+            android:src="@drawable/dp1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -83,7 +83,8 @@
             android:layout_marginTop="0dp"
             android:backgroundTint="@color/colorAccent"
             android:text="CANCEL"
-            android:textSize="10sp"
+            android:textColor="@color/textWhitePrimary"
+            android:textSize="@dimen/btn_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnEdit" />
@@ -97,7 +98,8 @@
             android:backgroundTint="@color/colorPrimary"
             android:text="EDIT"
             android:textColorLink="@color/colorAccent"
-            android:textSize="10sp"
+            android:textSize="@dimen/btn_text_size"
+            android:textColor="@color/textWhitePrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

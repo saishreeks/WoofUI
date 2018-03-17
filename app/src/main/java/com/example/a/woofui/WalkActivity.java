@@ -24,7 +24,7 @@ import android.widget.Toast;
  * Created by apple on 2018/3/4.
  */
 
-public class WalkActivity extends HomeActivity{
+public class WalkActivity extends NavigationDrawer{
 
     private FragmentManager manager;
 
@@ -83,16 +83,8 @@ public class WalkActivity extends HomeActivity{
 
             super.onCreate(savedInstanceState);
             setContentView(R.layout.walk_main);
-//        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar_mate);
-//        setSupportActionBar(toolBar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeButtonEnabled(true);
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        //DrawerLayout layout=(DrawerLayout)findViewById(R.id.drawerlayout1);
-        initInstances(R.id.drawerlayout1,R.id.toolbar_mate,this.getClass().getName().toLowerCase());
-        //DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //drawerLayout.measure(View.MeasureSpec.EXACTLY,View.MeasureSpec.EXACTLY);
-        //drawerLayout.layout(View.MeasureSpec.EXACTLY,View.MeasureSpec.EXACTLY,View.MeasureSpec.EXACTLY,View.MeasureSpec.EXACTLY);
+
+        initialization(R.id.nav_walk);
         final PostWalk postMateFragment = new PostWalk();
         final AvailableWalk availableMateFragment = new AvailableWalk();
         final RequestsWalk requestsMateFragment = new RequestsWalk();

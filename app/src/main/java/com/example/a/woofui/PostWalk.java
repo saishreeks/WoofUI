@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.example.a.model.WalkInfo;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -39,45 +41,47 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 
-public class PostWalk extends Fragment implements View.OnClickListener{
+public class PostWalk extends Fragment{
     PostWalkRecyclerAdapter adapter;
     RecyclerView recyclerView;
+    TextView noData;
 
-    @Override
-    public void onClick(View view) {
-
-        ApiVolley api=new ApiVolley(getContext());
-        Gson gson=new Gson();
-        SharedPreferences sharedPreferences=getActivity().getPreferences(Context.MODE_PRIVATE);
-        String json=sharedPreferences.getString(getString(R.string.dogDetails),null);
-        if(json==null)
-        {
-            //String json=gson.toJson()
-        }
-        else
-        {
-
-        }
-
-
-    }
     public PostWalk(){
 
     }
     public  void populateData(List<WalkInfo> list)
     {
-        String url=getResources().getString(R.string.image_url);
-        adapter=new PostWalkRecyclerAdapter(url, list,getFragmentManager());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        try {
+
+
+            String url = getResources().getString(R.string.image_url);
+            adapter = new PostWalkRecyclerAdapter(url, list, getFragmentManager());
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+
+            if (list.isEmpty()) {
+
+                recyclerView.setVisibility(View.GONE);
+                noData.setText("Post a walk for your dog");
+                noData.setVisibility(View.VISIBLE);
+            }
+            else {
+                recyclerView.setVisibility(View.VISIBLE);
+                noData.setVisibility(View.GONE);
+            }
+        }
+        catch (Exception e)
+            {
+                Log.e("RESOURCECHANGED",e.getMessage());
+            }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.post_mate,container,false);
         recyclerView = view.findViewById(R.id.recyclerview);
-
+        noData=view.findViewById(R.id.empty_view);
         ApiVolley api=new ApiVolley(getContext());
         SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
 
@@ -107,7 +111,7 @@ public class PostWalk extends Fragment implements View.OnClickListener{
             else if(method==Request.Method.DELETE)
                 text="Cancelled Successfully";
 
-            Snackbar.make(getActivity().findViewById(R.id.container),text,Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(getActivity().findViewById(R.id.container), Html.fromHtml("<font color=\"#ffffff\">"+text+"<\"font>"),Snackbar.LENGTH_SHORT).show();
             ApiVolley api=new ApiVolley(getContext());
             SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
 
@@ -117,7 +121,7 @@ public class PostWalk extends Fragment implements View.OnClickListener{
 
         }
         else
-            Snackbar.make(getActivity().findViewById(R.id.container),"Some Error Occured",Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(getActivity().findViewById(R.id.container),Html.fromHtml("<font color=\"#ffffff\">Some Error Occured<\"font>"),Snackbar.LENGTH_SHORT).show();
     }
 }
 
@@ -134,7 +138,9 @@ public class PostWalk extends Fragment implements View.OnClickListener{
                 PostWalkInfo postWalkInfo = new PostWalkInfo();
                 WalkInfo walkInfo=data.get(Integer.valueOf(view.getTag().toString().trim()));
                 Bundle bundle = new Bundle();
-                bundle.putStringArray("walkInfo",new String[]{walkInfo.getWalkInfoId().toString(),walkInfo.getDogId().getDogId().toString(),walkInfo.getWalkInfoDate().toString(),walkInfo.getWalkInfoDate().toString()});
+                String dte=new SimpleDateFormat("dd-MM-yyyy").format(walkInfo.getWalkInfoDate());
+
+                bundle.putStringArray("walkInfo",new String[]{walkInfo.getWalkInfoId().toString(),walkInfo.getDogId().getDogId().toString(),dte,walkInfo.getFromTime(),walkInfo.getToTime()});
                 postWalkInfo.setArguments(bundle);
 
                 //postWalkInfo.date.setText(walkInfo.getWalkInfoDate().toString());
@@ -211,9 +217,10 @@ public class PostWalk extends Fragment implements View.OnClickListener{
         });
 
         holder.name.setText(data.get(position).getDogId().getName());
-        holder.date.setText(data.get(position).getWalkInfoDate().toString());
-        SimpleDateFormat sdf =new SimpleDateFormat("HH:mm");
-        holder.time.setText(sdf.format(data.get(position).getFromTime()) +" - " +sdf.format(data.get(position).getToTime()));
+        SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyy");
+        holder.date.setText(sdf.format(data.get(position).getWalkInfoDate()));
+
+        holder.time.setText(data.get(position).getFromTime() +" - " +data.get(position).getToTime());
         //githolder.time.setText(data.get(position).getFromTime().toString() +" - "+ data.get(position).getToTime().toString());
         holder.edit.setOnClickListener(this);
         holder.edit.setTag(position);

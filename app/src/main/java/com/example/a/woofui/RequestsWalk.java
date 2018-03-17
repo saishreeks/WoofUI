@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +17,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.example.a.api.ApiVolley;
 import com.example.a.model.WalkInfo;
 import com.example.a.model.WalkReq;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -33,11 +39,14 @@ public class RequestsWalk extends Fragment {
 
     PendingReqRecyclerAdapter adapter;
     RecyclerView recyclerView;
+    TextView noData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recycle_view_list,container,false);
+
         recyclerView = view.findViewById(R.id.recyclerview);
+        noData=view.findViewById(R.id.empty_view);
         ApiVolley api=new ApiVolley(getContext());
         SharedPreferences pref=getActivity().getSharedPreferences("UserObject", Context.MODE_PRIVATE);
 
@@ -45,13 +54,28 @@ public class RequestsWalk extends Fragment {
         api.getPendingRequestsWalkList(this,pref.getInt("ownerId",0));
         return view;
     }
-    public  void populateData(List<WalkReq> list)
-    {
-        String url=getResources().getString(R.string.image_url);
-        adapter=new PendingReqRecyclerAdapter (url,list,getFragmentManager());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+    public  void populateData(List<WalkReq> list) {
+
+        try {
+            String url = getResources().getString(R.string.image_url);
+            adapter = new PendingReqRecyclerAdapter(url, list, getFragmentManager());
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            if (list.isEmpty()) {
+
+                recyclerView.setVisibility(View.GONE);
+                noData.setVisibility(View.VISIBLE);
+            }
+            else {
+                recyclerView.setVisibility(View.VISIBLE);
+                noData.setVisibility(View.GONE);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.e("RESOURCECHANGED",e.getMessage());
+        }
     }
 
     public  void walkCanceled(Boolean status){
@@ -59,16 +83,22 @@ public class RequestsWalk extends Fragment {
         String text="Cancelled Successfully";
         if(!status)
             text="Some error occured";
-        Snackbar.make(getActivity().findViewById(R.id.container),text,Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getActivity().findViewById(R.id.container), Html.fromHtml("<font color=\"#ffffff\">"+text+"<\"font>"),Snackbar.LENGTH_SHORT).show();
 
     }
 
-    public  void walkAccepted(Boolean status){
+    public  void walkAccepted(Boolean status,WalkInfo walkInfo){
 
-        String text="Cancelled Successfully";
+        String text="Accepted Successfully";
         if(!status)
             text="Some error occured";
-        Snackbar.make(getActivity().findViewById(R.id.container),text,Snackbar.LENGTH_SHORT).show();
+        else
+        {
+            ApiVolley api=new ApiVolley();
+            api.sendAcceptNotification(this,walkInfo);
+
+        }
+        Snackbar.make(getActivity().findViewById(R.id.container),Html.fromHtml("<font color=\"#ffffff\">"+text+"<\"font>"),Snackbar.LENGTH_SHORT).show();
 
     }
 
@@ -86,6 +116,7 @@ class PendingReqRecyclerAdapter extends RecyclerView.Adapter<com.example.a.woofu
                 break;
             case R.id.ignore:
                 Toast.makeText(view.getContext(),"Ignore"+view.getTag(),Toast.LENGTH_SHORT).show();
+
                 break;
 
         }
@@ -128,12 +159,30 @@ class PendingReqRecyclerAdapter extends RecyclerView.Adapter<com.example.a.woofu
     public void onBindViewHolder(final com.example.a.woofui.PendingReqRecyclerAdapter.ViewHolder holder, int position) {
 
         //  holder.textView.setText(dataSet[position]);
-        //holder.profileImg.setImageURI();
-        holder.name.setText(data.get(position).getReqId().getDogId().getName());
-        holder.date.setText(data.get(position).getWalkReqDate().toString());
+        ImageLoader imageLoader =ApiVolley.getImageLoader();
+        //"
+        imageLoader.get(  url+data.get(position).getWalkerId().getProfilepic(), new ImageLoader.ImageListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("IMG", "Image Load Error: " + error.getMessage());
+            }
+
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                if (response.getBitmap() != null) {
+                    // load image into imageview
+                    holder.profileImg.setImageBitmap(response.getBitmap());
+                }
+            }
+        });
+
+
+        holder.name.setText(data.get(position).getWalkerId().getName());
+        SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyy");
+        holder.date.setText(data.get(position).getReqId().getDogId().getName()+ " | "+ sdf.format(data.get(position).getWalkReqDate()));
         holder.time.setText(data.get(position).getWalkReqDate().toString());
-        SimpleDateFormat sdf =new SimpleDateFormat("HH:mm");
-        holder.time.setText(sdf.format(data.get(position).getReqId().getFromTime()) +" - " +sdf.format(data.get(position).getReqId().getToTime()));
+        holder.time.setText(data.get(position).getReqId().getFromTime() +" - " +data.get(position).getReqId().getToTime());
 
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,9 +197,19 @@ class PendingReqRecyclerAdapter extends RecyclerView.Adapter<com.example.a.woofu
                 walkInfo.setWalkerId(walkReq.getWalkerId());
                 api.acceptAWalk((RequestsWalk) fragmentManager.findFragmentByTag("requestsWalk"),walkInfo);
                 data.remove(holder.getAdapterPosition());
+                Iterator<WalkReq> iterator=data.iterator();
+                List<WalkReq> lst=new ArrayList<>();
 
-                notifyItemRemoved(holder.getAdapterPosition());
-                notifyItemRangeChanged(holder.getAdapterPosition(), data.size());
+                while(iterator.hasNext()) {
+                    WalkReq walkReq1=iterator.next();
+                    if(walkReq1.getReqId().equals(walkReq.getReqId()))
+                        lst.add(walkReq1);
+                }
+
+
+                data.removeAll(lst);
+                notifyDataSetChanged();
+                //notifyItemRangeChanged(holder.getAdapterPosition(), data.size());
 
                 Toast.makeText(view.getContext(),"Accept"+view.getTag(),Toast.LENGTH_SHORT).show();
 
@@ -162,22 +221,7 @@ class PendingReqRecyclerAdapter extends RecyclerView.Adapter<com.example.a.woofu
             @Override
             public void onClick(View view) {
 
-                ApiVolley api=new ApiVolley();
-                WalkReq walkReq=data.get(holder.getAdapterPosition());
 
-                //Set current owner
-
-                api.cancelAWalk((RequestsWalk) fragmentManager.findFragmentByTag("requestsWalk"),walkReq.getWalkReqId());
-                data.remove(holder.getAdapterPosition());
-                for (WalkReq walkReq1:data) {
-                    if(walkReq1.getReqId().equals(walkReq.getReqId()))
-                        data.remove(walkReq1);
-
-                }
-                notifyItemRemoved(holder.getAdapterPosition());
-                notifyItemRangeChanged(holder.getAdapterPosition(), data.size());
-
-                Toast.makeText(view.getContext(),"Ignore"+view.getTag(),Toast.LENGTH_SHORT).show();
 
             }
         });

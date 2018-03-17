@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,6 +29,7 @@ import com.example.a.model.WalkInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,11 +43,12 @@ import java.util.Map;
  * Created by apple on 2018/3/5.
  */
 
-public class PostWalkInfo extends DialogFragment implements View.OnClickListener {
+public class PostWalkInfo extends DialogFragment implements View.OnTouchListener{
 
     EditText date,toTime,fromTime;
     Spinner dogs;
     Button postBtn;
+    int dogId=0;
     Calendar calendar=Calendar.getInstance();
     ArrayList<String> list=new ArrayList<>();
     ArrayList<Integer> idList=new ArrayList<>();
@@ -53,8 +56,10 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
     ArrayAdapter<String> adapter;
 
     @Override
-    public void onClick(final View view) {
+    public boolean onTouch(final View view, MotionEvent motionEvent)  {
 
+
+        if(motionEvent.getAction()==MotionEvent.ACTION_DOWN)
         switch (view.getId()) {
 
             case R.id.date:
@@ -101,12 +106,16 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
                 }
 
         }
+        return  false;
     }
+
+
         public void populateDD(List<DogDetails> lst)
         {
             //ist<String> lst=new ArrayList<>();
             list.add("Select Dog");
             idList.add(0);
+
             for (DogDetails d:lst) {
                 list.add(d.getName());
                 idList.add(d.getDogId());
@@ -116,7 +125,14 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
             adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.support_simple_spinner_dropdown_item,list);
 
 
+
             dogs.setAdapter(adapter);
+            if(dogId!=0)
+            {
+                dogs.setSelection(idList.indexOf(dogId));
+                dogs.setSelected(true);
+
+            }
 
             adapter.notifyDataSetChanged();
 
@@ -136,6 +152,10 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
         Date dte=frmt.parse(date.getText().toString().trim());
 
         walkInfo.setWalkInfoDate(dte);
+        walkInfo.setFromTime(fromTime.getText().toString().trim());
+        walkInfo.setToTime(toTime.getText().toString().trim());
+
+
 
         int method= Request.Method.POST;
 
@@ -157,14 +177,29 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
         builder.setView(v);
         date = (EditText) v.findViewById(R.id.date);
         toTime = (EditText) v.findViewById(R.id.toTime);
+
         fromTime = (EditText) v.findViewById(R.id.fromTime);
+        date.setKeyListener(null);
+        toTime.setKeyListener(null);
+        fromTime.setKeyListener(null);
+
+
         postBtn = (Button)v.findViewById(R.id.postBtn);
-        date.setOnClickListener(this);
-        toTime.setOnClickListener(this);
-        fromTime.setOnClickListener(this);
+        date.setOnTouchListener(this);
+        toTime.setOnTouchListener(this);
+        fromTime.setOnTouchListener(this);
 
         dogs=(Spinner)v.findViewById(R.id.spinner);
-        postBtn.setOnClickListener(this);
+        postBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    postWalkInfo();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         //SpinnerAdapter adapter=dogs.getAdapter();
         SharedPreferences sharedPreferences=getActivity().getSharedPreferences("UserObject",Context.MODE_PRIVATE);
 
@@ -191,11 +226,14 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
         if(getArguments()!=null)
         {
             String[] ip=getArguments().getStringArray("walkInfo");
-            dogs.setSelection(Integer.valueOf(ip[1].trim()));
+            dogId=Integer.valueOf(ip[1].trim());
+            dogs.setSelection(idList.indexOf(dogId));
 
+            dogs.setSelected(true);
             walkInfo.setWalkInfoId(Integer.valueOf(ip[0]));
-
-            date.setText(new SimpleDateFormat("dd-MM-yyy").format(ip[2]));
+            date.setText(ip[2].trim());
+            fromTime.setText(ip[3].trim());
+            toTime.setText(ip[4].trim());
 
         }
         return builder.create();

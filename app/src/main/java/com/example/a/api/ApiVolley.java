@@ -472,6 +472,95 @@ public class ApiVolley  {
 
     }
 
+
+    //token update
+    public  void updateToken(final Context context, final String token,int id)
+    {
+        String url =context.getResources().getString(R.string.update_token_api);
+
+        final List<String> stList=new ArrayList<>();
+
+        final ObjectMapper objectMapper=new ObjectMapper();
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        objectMapper.setDateFormat(sdf);
+//        Gson gson = new Gson();
+//        JsonObject obj1 = new JsonParser().parse(gson.toJson(walkInfo)).getAsJsonObject();
+        OwnerDetails ownerDetails=new OwnerDetails();
+        ownerDetails.setOwnerId(id);
+        ownerDetails.setToken(token);
+
+        JSONObject obj=null;
+        try {
+            obj =new JSONObject( objectMapper.writeValueAsString(ownerDetails));
+        }catch (Exception e)
+        {
+            Log.e("JSONPARSE", e.getMessage());
+        }
+
+        // Request a string response from the provided URL.
+        final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,obj,
+
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Calling function after getting response.
+//                        activity.walkPosted(true,method);
+                    }
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+
+                Log.e("J",error.toString());
+  //              activity.walkPosted(false,method);
+
+            }
+
+
+        }){
+            @Override
+            public Map<String,String> getHeaders()
+            {
+
+                Map<String, String>  params = new HashMap<>();
+                params.put("Accept","application/json");
+                return  params;
+            }
+            @Override
+            public String getBodyContentType()
+            {
+                return "application/json";
+            }
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                Response res= super.parseNetworkResponse(response);
+                if(response.statusCode>=200 || response.statusCode<=204)
+                {
+                    try {
+                        return  Response.success(new JSONObject("{\"d\":\"d\"}"), null);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e("JSONParse", e.getMessage());
+                        return  res;
+                    }
+                }
+                else
+                    return res;
+            }
+
+
+        };
+        // Add the request to the RequestQueue.
+        queue.add(jsonRequest);
+
+    }
+
+
     //Dog Walk Api class start
     public  void postDogWalk(final PostWalk activity, final WalkInfo walkInfo,final int method)
     {
@@ -583,7 +672,9 @@ public class ApiVolley  {
                     @Override
                     public void onResponse(JSONObject response) {
                         //Calling function after getting response.
-                        activity.walkAccepted(true);
+                        activity.walkAccepted(true,walkInfo);
+
+
                     }
 
                 }, new Response.ErrorListener() {
@@ -592,7 +683,88 @@ public class ApiVolley  {
                 error.printStackTrace();
 
                 Log.e("J",error.toString());
-                activity.walkAccepted(true);
+                activity.walkAccepted(true,walkInfo);
+
+            }
+
+
+        }){
+            @Override
+            public Map<String,String> getHeaders()
+            {
+
+                Map<String, String>  params = new HashMap<>();
+                params.put("Accept","application/json");
+                return  params;
+            }
+            @Override
+            public String getBodyContentType()
+            {
+                return "application/json";
+            }
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                Response res= super.parseNetworkResponse(response);
+                if(response.statusCode>=200 || response.statusCode<=204)
+                {
+                    try {
+                        return  Response.success(new JSONObject("{\"d\":\"d\"}"), null);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e("JSONParse", e.getMessage());
+                        return  res;
+                    }
+                }
+                else
+                    return res;
+            }
+
+
+        };
+        // Add the request to the RequestQueue.
+        queue.add(jsonRequest);
+
+    }
+
+    public  void sendAcceptNotification(final RequestsWalk activity, final WalkInfo walkInfo)
+    {
+        String url =activity.getResources().getString(R.string.postNotification_url);
+        //url+="/"+walkInfo.getWalkInfoId();
+        final List<String> stList=new ArrayList<>();
+
+        final ObjectMapper objectMapper=new ObjectMapper();
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        objectMapper.setDateFormat(sdf);
+        JSONObject obj=null;
+        try {
+            obj =new JSONObject( objectMapper.writeValueAsString(walkInfo));
+        }catch (Exception e)
+        {
+            Log.e("JSONPARSE", e.getMessage());
+        }
+
+        // Request a string response from the provided URL.
+        final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,obj,
+
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Calling function after getting response.
+                        //activity.walkAccepted(true,walkInfo);
+
+
+                    }
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+
+                Log.e("J",error.toString());
+                //activity.walkAccepted(true);
 
             }
 
@@ -813,85 +985,80 @@ public class ApiVolley  {
         JSONObject obj=null;
         try {
 
-          //  obj = new JSONObject(objectMapper.writeValueAsString(walkReq));
-        }
-        catch(Exception e){
+            //  obj = new JSONObject(objectMapper.writeValueAsString(walkReq));
+
+
+            final JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.DELETE, url, null,
+
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            List<WalkInfo> list = null;
+                            try {
+
+
+                                //list=objectMapper.readValue(response.toString(),new TypeReference<List<WalkInfo>>(){});
+                            } catch (Exception e) {
+                                Log.e("JSONPARSE", e.getMessage());
+                            } finally {
+
+                                if (activity.getTag().toString().equals("requestsWalk"))
+                                    ((RequestsWalk) activity).walkCanceled(true);
+                                else
+                                    ((RequestedWalk) activity).walkCanceled(true);
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    Log.e("J", error.toString());
+                    if (activity.getTag().toString().equals("requestsWalk"))
+                        ((RequestsWalk) activity).walkCanceled(false);
+                    else
+                        ((RequestedWalk) activity).walkCanceled(false);
+
+                }
+
+
+            }) {
+
+                @Override
+                public Map<String, String> getHeaders() {
+
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Accept", "application/json");
+                    return params;
+                }
+
+                @Override
+                public String getBodyContentType() {
+                    return "application/json";
+                }
+
+                @Override
+                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                    Response res = super.parseNetworkResponse(response);
+                    if (response.statusCode >= 200 || response.statusCode <= 204) {
+                        try {
+                            return Response.success(new JSONObject("{\"d\":\"d\"}"), null);
+                        } catch (Exception e) {
+                            Log.e("JSONParse", e.getMessage());
+                            return res;
+                        }
+                    } else
+                        return res;
+                }
+
+
+            };
+            queue.add(stringRequest);
+        }catch(Exception e){
             Log.e("JOSNPARSE",e.getMessage());
         }
-        final JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.DELETE, url,null,
-
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        List<WalkInfo> list=null;
-                        try {
-
-
-                            //list=objectMapper.readValue(response.toString(),new TypeReference<List<WalkInfo>>(){});
-                        }
-                        catch (Exception e)
-                        {
-                            Log.e("JSONPARSE", e.getMessage());
-                        }
-                        finally {
-
-                            if(activity.getTag().toString().equals("requestsWalk"))
-                                ((RequestsWalk)activity).walkCanceled(true);
-                            else
-                                ((RequestedWalk)activity).walkCanceled(true);
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Log.e("J",error.toString());
-                if(activity.getTag().toString().equals("requestsWalk"))
-                    ((RequestsWalk)activity).walkCanceled(false);
-                else
-                    ((RequestedWalk)activity).walkCanceled(false);
-
-            }
-
-
-        }){
-
-            @Override
-            public Map<String,String> getHeaders()
-            {
-
-                Map<String, String>  params = new HashMap<>();
-                params.put("Accept","application/json");
-                return  params;
-            }
-            @Override
-            public String getBodyContentType()
-            {
-                return "application/json";
-            }
-            @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                Response res= super.parseNetworkResponse(response);
-                if(response.statusCode>=200 || response.statusCode<=204)
-                {
-                    try {
-                        return  Response.success(new JSONObject("{\"d\":\"d\"}"), null);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.e("JSONParse", e.getMessage());
-                        return  res;
-                    }
-                }
-                else
-                    return res;
-            }
-
-
-        };
 // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+
 
     }
 
@@ -1685,7 +1852,7 @@ public class ApiVolley  {
 
     }
 
-    public void getMateInfo(final HistoryDogMate historyDogMate, final Mateinfo mateinfo) {
+    public void getMateInfo(final HistoryDogMate historyDogMate, final int id) {
         String url =historyDogMate.getResources().getString(R.string.mate_info_api);
 //        url+="/1";
         final ObjectMapper objectMapper=new ObjectMapper();
@@ -1740,7 +1907,7 @@ public class ApiVolley  {
                 try {
 
 
-                    params.put("json", objectMapper.writeValueAsString(mateinfo));
+                //    params.put("json", objectMapper.writeValueAsString(mateinfo));
                 }
                 catch(Exception e)
                 {

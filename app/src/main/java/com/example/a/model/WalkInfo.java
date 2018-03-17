@@ -16,25 +16,25 @@ public class WalkInfo {
 
     private OwnerDetails walkerId;
 
-    public Date getFromTime() {
+    public String getFromTime() {
         return fromTime;
     }
 
-    public void setFromTime(Date fromTime) {
+    public void setFromTime(String fromTime) {
         this.fromTime = fromTime;
     }
 
-    public Date getToTime() {
+    public String getToTime() {
         return toTime;
     }
 
-    public void setToTime(Date toTime) {
+    public void setToTime(String toTime) {
         this.toTime = toTime;
     }
 
     //private Date walkTime;
-    private Date fromTime;
-    private Date toTime;
+    private String fromTime;
+    private String toTime;
 
 
 //    private Collection<WalkReq> walkReqCollection;
@@ -61,6 +61,8 @@ public class WalkInfo {
     }
 
     public void setWalkInfoDate(Date walkInfoDate) {
+
+
         this.walkInfoDate = walkInfoDate;
     }
 

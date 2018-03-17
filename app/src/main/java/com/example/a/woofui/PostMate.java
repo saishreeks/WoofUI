@@ -2,6 +2,7 @@ package com.example.a.woofui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,7 +133,8 @@ public class PostMate extends Fragment implements View.OnClickListener{
             else if(method==Request.Method.DELETE)
                 text="Cancelled Successfully";
 
-            Snackbar.make(getActivity().findViewById(R.id.container),text,Snackbar.LENGTH_SHORT).show();
+
+            Snackbar.make(getActivity().findViewById(R.id.container), Html.fromHtml("<font color:\"#ffffff\">fadfa"+text+"<\"font>"),Snackbar.LENGTH_SHORT).show();
             SharedPreferences sharedPreferences=getActivity().getSharedPreferences("UserObject",Context.MODE_PRIVATE);
 
             ApiVolley api=new ApiVolley(getContext());
